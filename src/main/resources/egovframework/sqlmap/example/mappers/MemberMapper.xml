@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.Test.main.service.dao.MemberDAO">
+
+	<select parameterType="egovframework.Test.main.service.TestMemberVO"
+			id="login" resultType="egovframework.Test.main.service.TestMemberVO">
+		SELECT ID, NAME, PASSWORD, EMAIL, PHONE
+		FROM TESTMEMBERSEO
+		WHERE ID = #{id} AND PASSWORD = #{password}
+	</select>
+	
+	<select parameterType="egovframework.Test.main.service.TestMemberVO"
+			id="logout" resultType="egovframework.Test.main.service.TestMemberVO">
+		SELECT ID, NAME, PASSWORD, EMAIL, PHONE
+		FROM TESTMEMBERSEO
+		WHERE ID = #{id} AND PASSWORD = #{password}
+	</select>
+	
+	<insert parameterType="egovframework.Test.main.service.TestMemberVO" id="signUp">
+		INSERT INTO TESTMEMBERSEO(ID, NAME, PASSWORD, EMAIL, PHONE)
+		VALUES(#{id}, #{name}, #{password}, #{email}, #{phone}) 
+	</insert>
+	
+	<select parameterType="String" id="idcheck" resultType="int">
+		SELECT COUNT(*)
+		FROM TESTMEMBERSEO
+		WHERE ID = #{id} 
+	</select>
+
+</mapper>
+
+
