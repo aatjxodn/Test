@@ -110,8 +110,6 @@
 <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
 
-var userId = ${user.id };
-
 // 댓글 추가 기능
 $(document).ready(function(){
 	
