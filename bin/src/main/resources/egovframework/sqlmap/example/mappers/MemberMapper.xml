@@ -28,15 +28,6 @@
 		FROM TESTMEMBERSEO
 		WHERE ID = #{id} 
 	</select>
-	
-	<select id="admin_ipCheck" parameterType="egovframework.Test.main.service.TestMemberVO" resultType="String">
-		SELECT
-		REPLACE(REPLACE(JSON_EXTRACT(INFO1, '$.ACCEPT_ADMIN.IP'),'[',''),']','') AS INFO1
-		FROM TEST_CONFIG
-		WHERE INFOMATION = 'TEST' 
-		AND DEFAULT_NUM = 'WEB_ADMIN'
-	</select>
-	
 
 </mapper>
 

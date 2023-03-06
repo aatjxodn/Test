@@ -1,0 +1,8 @@
+/target/
+.classpath
+.settins/org.eclipse.core.resource.prefs
+.settins/org.eclipse.wst.common.component
+.settins/org.eclipse.wst.common.project.facet.core.prefs.xml
+.settins/org.eclipse.wst.common.project.facet.core.xml
+.settins/org.eclipse.core.resources.prefs
+.settins/org.eclipse.jdt.core.prefs

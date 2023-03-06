@@ -1,14 +1,16 @@
-package egovframework.Test.main.controller;
+package egovframework.Test.main.web;
 
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -87,16 +89,43 @@ public class MainAjaxController {
         return count;
     }
 	
-	@RequestMapping(value="/search.do",produces = "application/json; charset=utf8", method=RequestMethod.POST)
-	@ResponseBody
-	public List<TestBoardServiceVO> search(TestBoardServiceVO vo) {
+	
+	@RequestMapping("/deleteComment.do")
+    @ResponseBody
+    public int deleteComment(TestCommentVO vo, @RequestParam("deleteSeq") int deleteSeq) {
 		
-		List<TestBoardServiceVO> search = boardService.search(vo);
+		vo.setSeq(deleteSeq);
 		
-		System.out.println("ddddddddddddddddddddddddddd :::" + search);
-		return search;
+		int deleteCom = commentService.deleteComment(vo);
+		
+		return deleteCom;
 	}
 	
+	@RequestMapping("/goUpdateComment.do")
+    @ResponseBody
+    public int goUpdateComment(TestCommentVO vo) {
+		
+		int deleteCom = commentService.goUpdateComment(vo);
+		
+		return deleteCom;
+	}
+	
+
+	
+	
+    
+    
+    
+    
+//	@RequestMapping(value="/search.do",produces = "application/json; charset=utf8", method=RequestMethod.POST)
+//	@ResponseBody
+//	public List<TestBoardServiceVO> search(TestBoardServiceVO vo) {
+//		
+//		List<TestBoardServiceVO> search = boardService.search(vo);
+//		
+//		System.out.println("ddddddddddddddddddddddddddd :::" + search);
+//		return search;
+//	}
 	
 	
 

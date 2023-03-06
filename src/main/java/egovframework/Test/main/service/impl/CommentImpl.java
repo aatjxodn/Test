@@ -43,6 +43,14 @@ public class CommentImpl {
 		return commentDAO.totalSelectCommentList(vo);
 	}
 	
+	public int deleteComment(TestCommentVO vo) {
+		return commentDAO.deleteComment(vo);
+	}
+
+	public int goUpdateComment(TestCommentVO vo) {
+		return commentDAO.goUpdateComment(vo);
+	}
+	
 	
 	
 	

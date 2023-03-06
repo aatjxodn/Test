@@ -110,6 +110,8 @@
 <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
 
+var userId = ${user.id };
+
 // 댓글 추가 기능
 $(document).ready(function(){
 	
@@ -200,7 +202,7 @@ function fn_selectCommentList() {
 }
 
 
-// 답글 작성 버튼 누를 시 생성 
+// 답글 버튼 누를 시 생성 
 function fn_insertCommentButton(seq, depth, groupOrder, groupNum) { 
 	
 	var testHtml = "";
@@ -221,136 +223,19 @@ function fn_insertCommentButton(seq, depth, groupOrder, groupNum) {
 	$("#depth").val(depth+1);
 	$("#order").val(groupOrder+1);
 	
-	
 	// 버튼 비활성화
-	const target1 = document.getElementById('insertCommentButton');
-	const target2 = document.getElementById('updateCommentButton');
-	const target3 = document.getElementById('deleteCommentButton');
-	target1.disabled = true;
-	target2.disabled = true;
-	target3.disabled = true;
+	/* const target = document.getElementById('insertCommentButton');
+	target.disabled = true; */
+
 }
 
-// 답변 수정 버튼 누를 시 생성
-function fn_updateCommentButton(seq, depth, groupOrder, groupNum) {
-	
-	var testHtml = "";
-
-	testHtml += "<form id='updateCommentCommentArea' method='post' style='display: block; margin-top: 15px;'>";
-	testHtml += "<input type='text' value='' name='comment' style='padding: 15px; width: 300px; text-align: left;' placeholder='답글을 수정하세요.'>";
-	testHtml += "<input type='button' value='취소' onclick='fn_cancelBut2()' style='padding: 15px;'>";
-	testHtml += "<input type='button' value='수정' onclick='fn_updateCommentComment()' style='padding: 15px;'>";
-	testHtml += "<input type='hidden' value='" + seq + "' id='seq' name='seq'>";
-	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>";
-	testHtml += "<input type='hidden' value='${user.id }' name='id'>";
-	testHtml += "</form>";
-	
-	$("#ul2_"+seq).append(testHtml)
-	$("#depth").val(depth+1);
-	$("#order").val(groupOrder+1);
-	
-	// 버튼 비활성화
-	const target1 = document.getElementById('insertCommentButton');
-	const target2 = document.getElementById('updateCommentButton');
-	const target3 = document.getElementById('deleteCommentButton');
-	target1.disabled = true;
-	target2.disabled = true;
-	target3.disabled = true;
-}
-
-// 답글 및 답변 수정
-function fn_updateCommentComment() {
-
-	var result = confirm('수정 하시겠습니까?');
-	if (result == true) {
-		
-	    $.ajax({
-	        url: "goUpdateComment.do",
-	        type: "POST",
-	        async: false,
-	        dataType: 'json',
-	        data: $('#updateCommentCommentArea').serialize(),
-	        success: function(data){
-	        	console.log(data);
-	        	
-	        	alert('수정이 완료되었습니다.');
-	        	
-	            fn_selectCommentList();
-	            
-	        },
-	        error: function(error){
-	        	alert("실패 : " + error);  
-	        }
-	    });
-		
-	}
-	
-}
-
-
-// 답변 삭제
-function fn_deleteCommentButton(seq) {
-
-	var result = confirm('삭제 하시겠습니까?');
-	if (result == true) {
-		
-		var deleteSeq = seq;
-		
-	    $.ajax({
-	        url: "deleteComment.do",
-	        type: "POST",
-	        async: false,
-	        dataType: 'json',
-	        data: {
-	        	deleteSeq : deleteSeq
-	        },
-	        success: function(data){
-	        	console.log(data);
-	        	
-	        	alert('삭제가 완료되었습니다.');
-	        	
-	            fn_selectCommentList();
-	            
-	        },
-	        error: function(error){
-	        	alert("실패 : " + error);  
-	        }
-	    });
-		
-	}
-}
-
-
-//답글 취소 기능
+//답글 버튼 누를 시 취소 기능
 function fn_cancelBut() {
 	$("#insertCommentCommentArea").css("display","none");
 	
 	// 버튼 활성화
-	const target1 = document.getElementById('insertCommentButton');
-	const target2 = document.getElementById('updateCommentButton');
-	const target3 = document.getElementById('deleteCommentButton');
-	target1.disabled = false;
-	target2.disabled = false;
-	target3.disabled = false;
-
-	
-}
-
-//답글 취소 기능2
-function fn_cancelBut2() {
-	$("#updateCommentCommentArea").css("display","none");
-	
-	$("#ul2_"+seq).append(testHtml)
-	$("#depth").val(depth+1);
-	$("#order").val(groupOrder+1);
-
-	// 버튼 활성화
-	const target1 = document.getElementById('insertCommentButton');
-	const target2 = document.getElementById('updateCommentButton');
-	const target3 = document.getElementById('deleteCommentButton');
-	target1.disabled = false;
-	target2.disabled = false;
-	target3.disabled = false;
+	/* const target = document.getElementById('insertCommentButton');
+	target.disabled = false; */
 }
 
 

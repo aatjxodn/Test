@@ -29,4 +29,8 @@ public class MemberImpl {
 		return memberDAO.logout(vo);
 	}
 
+	public String admin_ipCheck(TestMemberVO vo) {
+		return memberDAO.admin_ipCheck(vo);
+	}
+
 }

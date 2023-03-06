@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.Test.main.service.dao.BoardServiceDAO">
+
+	<select resultType="egovframework.Test.main.service.TestBoardServiceVO" parameterType="map" id="selectBoardList">
+		SELECT P.*, PAYMENT_ID as paymentId,
+		P.customer_id as customerId,
+		P.staff_id as staffId,
+		P.rental_id as rentalId,
+		C.FIRST_NAME as firstName,
+		R_NUM as rNum,
+		P.VIEW_CNT as viewCnt,
+		P.LIKE_CNT as likeCnt,
+		P.ID as id
+		FROM
+		(SELECT ROW_NUMBER() OVER (ORDER BY payment_id DESC) AS
+		R_NUM, P.* FROM
+		payment P) P
+		LEFT JOIN customer C ON P.customer_id = C.customer_id
+		LEFT JOIN staff S ON P.staff_id = S.staff_id
+		LEFT JOIN rental R ON P.rental_id = R.rental_id
+		WHERE R_NUM BETWEEN #{begin} AND #{end}
+	</select>
+
+	<select resultType="int" id="totalSelectBoardList">
+		SELECT COUNT(*) AS CNT
+		FROM
+		(SELECT
+		ROW_NUMBER() OVER (ORDER BY payment_id DESC) AS R_NUM, P.* FROM
+		payment P) P
+		LEFT JOIN customer C ON P.customer_id = C.customer_id
+		LEFT JOIN staff S ON P.staff_id = S.staff_id
+		LEFT JOIN rental R ON
+		P.rental_id = R.rental_id
+	</select>
+
+	<select id="selectView" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">
+		SELECT PAYMENT_ID as paymentId,
+		customer_id as customerId,
+		staff_id as staffId,
+		rental_id as rentalId,
+		VIEW_CNT as viewCnt,
+		LIKE_CNT as likeCnt,
+		ID as id
+		FROM PAYMENT
+		WHERE PAYMENT_ID = #{paymentId}
+	</select>
+
+	<update id="viewCount" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+		UPDATE PAYMENT
+		SET VIEW_CNT = VIEW_CNT + 1
+		WHERE PAYMENT_ID = #{paymentId}
+	</update>
+
+	<select id="search" parameterType="egovframework.Test.main.service.TestBoardServiceVO" 
+						resultType="egovframework.Test.main.service.TestBoardServiceVO">
+		SELECT 
+				PAYMENT_ID as paymentId,
+				customer_id as customerId,
+				staff_id as staffId,
+				rental_id as rentalId,
+				VIEW_CNT as viewCnt,
+				LIKE_CNT as likeCnt,
+				ID as id
+		FROM PAYMENT
+		WHERE PAYMENT_ID LIKE #{paymentId}
+		LIMIT 5
+	</select>
+	
+
+
+</mapper>

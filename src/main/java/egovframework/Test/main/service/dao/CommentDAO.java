@@ -21,5 +21,9 @@ public interface CommentDAO {
 	public int MaxGroupOrder(TestCommentVO vo);
 	// 댓글 개수 조회
 	public int totalSelectCommentList(TestCommentVO vo);
+	// 댓글 삭제
+	public int deleteComment(TestCommentVO vo);
+	// 댓글 수정
+	public int goUpdateComment(TestCommentVO vo);
 	
 }

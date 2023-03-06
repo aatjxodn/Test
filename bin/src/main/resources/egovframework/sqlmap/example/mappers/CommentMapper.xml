@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.Test.main.service.dao.CommentDAO">
+
+<select id="selectCommentList" parameterType="egovframework.Test.main.service.TestCommentVO"
+						resultType="egovframework.Test.main.service.TestCommentVO">
+		SELECT *, GROUP_NUM AS groupNum, GROUP_ORDER AS groupOrder 
+		FROM AUTO_COMMENT
+		WHERE PAYMENT_ID = #{paymentId}
+		ORDER BY GROUP_NUM,GROUP_ORDER,SEQ
+		LIMIT #{limit}
+</select>
+
+<select id="totalSelectCommentList" parameterType="egovframework.Test.main.service.TestCommentVO" 
+						resultType="int">
+	SELECT COUNT(*)
+	FROM AUTO_COMMENT
+	WHERE PAYMENT_ID = #{paymentId}
+</select>
+
+<insert id="insertComment" parameterType="egovframework.Test.main.service.TestCommentVO" keyProperty="seq" useGeneratedKeys="true">
+	INSERT INTO AUTO_COMMENT(COMMENT, PAYMENT_ID, DEPTH, REF_SEQ, ID, GROUP_NUM)
+	VALUES (#{comment}, #{paymentId}, 0, 0, #{id}, #{seq}) 
+</insert>
+
+<update id="updateComment" parameterType="egovframework.Test.main.service.TestCommentVO">
+	UPDATE AUTO_COMMENT
+	SET GROUP_NUM = #{seq}
+	WHERE SEQ = #{seq} 
+</update>
+
+<insert id="insertCommentComment" parameterType="egovframework.Test.main.service.TestCommentVO" 
+			keyProperty="seq" useGeneratedKeys="true">
+INSERT INTO AUTO_COMMENT(COMMENT, PAYMENT_ID, DEPTH, REF_SEQ, ID, GROUP_NUM, GROUP_ORDER)
+VALUES (#{comment}, #{paymentId}, #{depth}, #{seq}, #{id}, #{groupNum}, #{groupOrder}) 
+</insert>
+
+
+<update parameterType="egovframework.Test.main.service.TestCommentVO" id="updateCommentComment">
+UPDATE AUTO_COMMENT
+SET GROUP_ORDER = GROUP_ORDER + 1
+WHERE GROUP_NUM = #{groupNum} 
+AND SEQ != #{seq}
+AND GROUP_ORDER >= #{groupOrder}
+</update>
+
+<select parameterType="egovframework.Test.main.service.TestCommentVO" id="MaxGroupOrder" resultType="int">
+SELECT IFNULL(MAX(GROUP_ORDER), 0)
+FROM AUTO_COMMENT
+WHERE PAYMENT_ID = #{paymentId}
+AND GROUP_NUM = #{groupNum}
+AND REF_SEQ = #{seq} 
+</select>
+
+
+
+
+</mapper>

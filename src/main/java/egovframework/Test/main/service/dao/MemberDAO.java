@@ -13,4 +13,6 @@ public interface MemberDAO {
 	public int idcheck(String id);
 	// 로그아웃
 	public TestMemberVO logout(TestMemberVO vo);
+	// ip 체크
+	public String admin_ipCheck(TestMemberVO vo);
 }

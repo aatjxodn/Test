@@ -1,5 +1,6 @@
-package egovframework.Test.main.controller;
+package egovframework.Test.main.web;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +23,13 @@ import egovframework.Test.main.service.TestPagingVO;
 import egovframework.Test.main.service.impl.BoardServiceImpl;
 import egovframework.Test.main.service.impl.CommentImpl;
 import egovframework.Test.main.service.impl.MemberImpl;
+import egovframework.common.util.StringUtils;
+import egovframework.common.util.alertUtils;
 
 @Controller
 public class MainController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
 	@Resource(name = "memberService")
 	private MemberImpl memberService;
@@ -37,6 +44,7 @@ public class MainController {
 	public String mainPage() {
 		return "login";
 	}
+
 	
 	@RequestMapping("/goSignUp.do")
 	public String goSignUp() {
@@ -61,7 +69,7 @@ public class MainController {
 	}
 
 	@RequestMapping("/login.do")
-	public String login(TestMemberVO vo, HttpSession session, Model model) throws Exception {
+	public String login(TestMemberVO vo, HttpSession session, Model model, HttpServletResponse response) throws Exception {
 
 		System.out.println("로그인 시작");
 		vo.setPassword(egovframework.common.util.StringUtils.testSHA256(vo.getPassword()));
@@ -79,8 +87,8 @@ public class MainController {
 
 		} else {
 			System.out.println(">> 로그인 실패");
-
 			System.out.println("유저  : " + user);
+			alertUtils.alert(response, "아이디 또는 비밀번호가 틀렸습니다.");
 
 			return "/login";
 
@@ -101,28 +109,48 @@ public class MainController {
 	}
 
 	@RequestMapping("/selectBoardList.do")
-	public String selectBoardList(TestPagingVO p, TestBoardServiceVO vo,
+	public String selectBoardList(TestPagingVO p, TestBoardServiceVO vo, TestMemberVO vo2,
 			HttpServletRequest request, HttpServletResponse response,
-			Model model, HttpSession session) {
+			Model model, HttpSession session) throws IOException {
 
 		TestMemberVO user = (TestMemberVO) session.getAttribute("user");
 
 		if (user == null) {
+			alertUtils.alert(response, "아이디 기록이 없습니다.");
+			
 			return "/login";
 		}
+		
+		String localIp = StringUtils.IPetRemoteAddr(request);
+		String ipCheck = memberService.admin_ipCheck(vo2);
+		String[] arrIp = ipCheck.split(",");		
+		// db ip 배열이랑 위에 ip 체크
+		for (int i=0; i < arrIp.length; i++) {
+			if (localIp.trim().equalsIgnoreCase(arrIp[i].replace("\"", "").trim())) {
+				// 로그 찍기
+				LOGGER.debug("접근 ip : ["+localIp+"]");
+				
+				p.setPages(p, boardService);
 
-		p.setPages(p, boardService);
+				List<TestBoardServiceVO> selectBoardList = boardService.selectBoardList(p.getBegin(), p.getEnd());
 
-		List<TestBoardServiceVO> selectBoardList = boardService.selectBoardList(p.getBegin(), p.getEnd());
+				model.addAttribute("page", p);
+				model.addAttribute("selectBoardList", selectBoardList);
+				model.addAttribute("totalSelectBoardList",
+				boardService.totalSelectBoardList());
 
-		model.addAttribute("page", p);
-		model.addAttribute("selectBoardList", selectBoardList);
-		model.addAttribute("totalSelectBoardList",
-		boardService.totalSelectBoardList());
+				System.out.println(selectBoardList);
+				
+				return "/boardList";
+			}
+		}
+		
+		// 로그 찍기
+		LOGGER.debug("접근 불가능 ip : ["+localIp+"]");
+		// alert 클래스 호출
+		alertUtils.alertAndMovePage(response, "접근할 수 없는 ip입니다. 관리자에게 문의하세요.", "main.do");
 
-		System.out.println(selectBoardList);
-
-		return "/boardList";
+		return null;
 	}
 
 	@RequestMapping("/selectView.do")
