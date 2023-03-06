@@ -1,11 +1,12 @@
 package egovframework.common.util;
 
+import java.io.File;
 import java.security.MessageDigest;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class StringUtils {
-	// 비번 암호화 
+	// 비번 sha256 암호화 
 	public static String testSHA256(String txt) throws Exception{
 	    StringBuffer sbuf = new StringBuffer();
 	     
@@ -23,6 +24,46 @@ public class StringUtils {
 	     
 	    return sbuf.toString();
 	}
+	
+	// 비번 MD5 암호화
+	/**
+	 * @param s
+	 * @return 암호화된 String
+	 * "MD5:"+Utility.MD5("!@dusthvmxm!@") ->8f1cdcfa9e7c5158b268c5b222006f95
+	 */
+	public static String MD5(String s){
+		MessageDigest md5 = null;
+		try {
+			md5 = MessageDigest.getInstance("MD5");
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		String eip;
+		byte[] bip = md5.digest(s.getBytes());
+		String temp = "";
+		for(int i=0; i < bip.length; i++){
+			eip = "" + Integer.toHexString((int)bip[i] & 0x000000ff);
+			if (eip.length() < 2) eip = "0" + eip;
+			temp = temp + eip;
+		}
+		return temp;
+	}
+	/**
+	 * getRootPath : 프로젝트 디렉토리 path
+	 * @return
+	 */
+	public static String getRootPath() {
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		File file = new File(loader.getResource("").getFile());
+		String path = file.getParent();
+		path = path.replace("WEB-INF",  "");
+		path = path.replace("%20", " ");
+		file = null;
+		
+		return path;
+	}
+
 	
 	// ip 찾기 
 	public static String IPetRemoteAddr(HttpServletRequest request) {
@@ -55,6 +96,8 @@ public class StringUtils {
         
 		return ip;
 	}
+	
+
 
 	
 }
