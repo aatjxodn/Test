@@ -15,6 +15,9 @@ public interface BoardServiceDAO {
 	public TestBoardServiceVO selectView(TestBoardServiceVO vo);
 	// 게시물 조회수 조회
 	public int viewCount(TestBoardServiceVO vo);
+	// 게시글 검색
 	public List<TestBoardServiceVO> search(TestBoardServiceVO vo);
+	// 조회순 나열
+	public List<TestBoardServiceVO> orderByView(TestBoardServiceVO vo);
 	
 }

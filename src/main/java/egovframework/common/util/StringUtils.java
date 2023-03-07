@@ -5,7 +5,16 @@ import java.security.MessageDigest;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import egovframework.Test.main.web.MainController;
+
 public class StringUtils {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(StringUtils.class);
+	
+	
 	// 비번 sha256 암호화 
 	public static String testSHA256(String txt) throws Exception{
 	    StringBuffer sbuf = new StringBuffer();
@@ -67,13 +76,23 @@ public class StringUtils {
 	
 	// ip 찾기 
 	public static String IPetRemoteAddr(HttpServletRequest request) {
-        String ip = null;
-        ip = request.getHeader("X-Forwarded-For");
+		
+        String ip = request.getHeader("X-Forwarded-For");
+        LOGGER.debug("X-Forwarded-For : ["+ip+"]");
+        LOGGER.debug("Proxy-Client-IP : ["+request.getHeader("Proxy-Client-IP")+"]");
+        LOGGER.debug("WL-Proxy-Client-IP : ["+request.getHeader("WL-Proxy-Client-IP")+"]");
+        LOGGER.debug("HTTP_CLIENT_IP : ["+request.getHeader("HTTP_CLIENT_IP")+"]");
+        LOGGER.debug("HTTP_X_FORWARDED_FOR : ["+request.getHeader("HTTP_X_FORWARDED_FOR")+"]");
+        LOGGER.debug("X-Real-IP : ["+request.getHeader("X-Real-IP")+"]");
+        LOGGER.debug("REMOTE_ADDR : ["+request.getHeader("REMOTE_ADDR")+"]");
+        LOGGER.debug("request.getRemoteAddr() : ["+request.getRemoteAddr()+"]");
+        
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
             ip = request.getHeader("Proxy-Client-IP"); 
+            
         } 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
-            ip = request.getHeader("WL-Proxy-Client-IP"); 
+            ip = request.getHeader("WL-Proxy-Client-IP");
         } 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
             ip = request.getHeader("HTTP_CLIENT_IP"); 
@@ -85,14 +104,12 @@ public class StringUtils {
             ip = request.getHeader("X-Real-IP"); 
         }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
-            ip = request.getHeader("X-RealIP"); 
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
             ip = request.getHeader("REMOTE_ADDR");
         }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
             ip = request.getRemoteAddr(); 
         }
+        
         
 		return ip;
 	}

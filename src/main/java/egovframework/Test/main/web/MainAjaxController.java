@@ -1,5 +1,6 @@
 package egovframework.Test.main.web;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -110,22 +111,16 @@ public class MainAjaxController {
 		return deleteCom;
 	}
 	
-
-	
-	
     
-    
-    
-    
-//	@RequestMapping(value="/search.do",produces = "application/json; charset=utf8", method=RequestMethod.POST)
-//	@ResponseBody
-//	public List<TestBoardServiceVO> search(TestBoardServiceVO vo) {
-//		
-//		List<TestBoardServiceVO> search = boardService.search(vo);
-//		
-//		System.out.println("ddddddddddddddddddddddddddd :::" + search);
-//		return search;
-//	}
+	@RequestMapping(value="/search.do",produces = "application/json; charset=utf8", method=RequestMethod.POST)
+	@ResponseBody
+	public List<TestBoardServiceVO> search(TestBoardServiceVO vo) {
+		
+		List<TestBoardServiceVO> search = boardService.search(vo);
+		
+		System.out.println("ddddddddddddddddddddddddddd :::" + search);
+		return search;
+	}
 	
 	
 

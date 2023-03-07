@@ -117,7 +117,6 @@ public class MainController {
 
 		if (user == null) {
 			alertUtils.alert(response, "아이디 기록이 없습니다.");
-			
 			return "/login";
 		}
 		
@@ -133,11 +132,12 @@ public class MainController {
 				p.setPages(p, boardService);
 
 				List<TestBoardServiceVO> selectBoardList = boardService.selectBoardList(p.getBegin(), p.getEnd());
+				List<TestBoardServiceVO> orderByView = boardService.orderByView(vo);
 
 				model.addAttribute("page", p);
 				model.addAttribute("selectBoardList", selectBoardList);
-				model.addAttribute("totalSelectBoardList",
-				boardService.totalSelectBoardList());
+				model.addAttribute("totalSelectBoardList", boardService.totalSelectBoardList());
+				model.addAttribute("orderByView", orderByView);
 
 				System.out.println(selectBoardList);
 				

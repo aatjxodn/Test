@@ -35,5 +35,10 @@ public class BoardServiceImpl {
 		return boardServiceDAO.search(vo);
 	}
 	
+	public List<TestBoardServiceVO> orderByView(TestBoardServiceVO vo) {
+		return boardServiceDAO.orderByView(vo);
+	}
+	
+	
 
 }
