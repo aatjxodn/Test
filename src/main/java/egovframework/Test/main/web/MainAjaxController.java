@@ -112,15 +112,38 @@ public class MainAjaxController {
 	}
 	
     
-	@RequestMapping(value="/search.do",produces = "application/json; charset=utf8", method=RequestMethod.POST)
-	@ResponseBody
-	public List<TestBoardServiceVO> search(TestBoardServiceVO vo) {
-		
-		List<TestBoardServiceVO> search = boardService.search(vo);
-		
-		System.out.println("ddddddddddddddddddddddddddd :::" + search);
-		return search;
-	}
+//	@RequestMapping(value="/search.do")
+//	@ResponseBody
+//	public List<TestBoardServiceVO> search(TestBoardServiceVO vo, 
+//					@RequestParam(value="idx", defaultValue="0") String idx, @RequestParam(value="keyWord", defaultValue="0") int keyWord, HttpServletRequest request, @RequestBody String paramData)
+//								 throws NullPointerException {
+//		
+//		System.out.println("idx : " + idx);
+//		System.out.println("keyWord : " + keyWord);
+//		System.out.println("idx : " + request.getParameter("idx"));
+//		System.out.println(paramData);
+//		
+//		if (idx.equalsIgnoreCase("0")) {
+//			vo.setPaymentId(keyWord);
+//			
+//			List<TestBoardServiceVO> search = boardService.search(vo);
+//			
+//			System.out.println("search1 : " + search);
+//			
+//			return search;
+//			
+//		} else if (idx.equalsIgnoreCase("1")) {
+//			vo.setCustomerId(keyWord);
+//			
+//			List<TestBoardServiceVO> search = boardService.search(vo);
+//			
+//			System.out.println("search2 : " + search);
+//			
+//			return search;
+//		}
+//		
+//		return null;
+//	}
 	
 	
 

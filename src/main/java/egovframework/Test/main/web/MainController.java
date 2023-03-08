@@ -220,7 +220,35 @@ public class MainController {
 		}
 
 		return "/selectView";
-
+	}
+	
+	
+	@RequestMapping("/search.do")
+	public String search(TestBoardServiceVO vo, Model model, HttpServletRequest request, TestPagingVO p) {
+		
+		String idx = request.getParameter("idx");
+		int keyWord = Integer.parseInt(request.getParameter("keyWord"));
+		
+		if (idx.equalsIgnoreCase("0")) {
+			vo.setPaymentId(keyWord);
+			vo.setIdx(idx);
+			
+			List<TestBoardServiceVO> searchList = boardService.search(vo);
+			
+			model.addAttribute("searchList", searchList);
+			
+		} else if (idx.equalsIgnoreCase("1")) {
+			vo.setCustomerId(keyWord);
+			vo.setIdx(idx);
+			
+			List<TestBoardServiceVO> searchList = boardService.search(vo);
+			
+			model.addAttribute("searchList", searchList);
+			
+		}
+		
+		
+		return "/search";
 	}
 
 }

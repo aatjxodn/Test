@@ -15,9 +15,11 @@ public interface BoardServiceDAO {
 	public TestBoardServiceVO selectView(TestBoardServiceVO vo);
 	// 게시물 조회수 조회
 	public int viewCount(TestBoardServiceVO vo);
-	// 게시글 검색
-	public List<TestBoardServiceVO> search(TestBoardServiceVO vo);
 	// 조회순 나열
 	public List<TestBoardServiceVO> orderByView(TestBoardServiceVO vo);
+	// 게시글 검색 페이징
+//	public List<TestBoardServiceVO> search(@Param("begin")int begin, @Param("end") int end);
+	// 게시글 검색 페이징
+	public List<TestBoardServiceVO> search(TestBoardServiceVO vo);
 	
 }

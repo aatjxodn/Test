@@ -5,7 +5,28 @@ public class TestBoardServiceVO {
 	private String paymentDate, firstName, id, search;
 	private int viewCnt;
 	private int likeCnt;
+	private int keyWord;
+	private String idx;
 	
+	
+	public int getKeyWord() {
+		return keyWord;
+	}
+	public void setKeyWord(int keyWord) {
+		this.keyWord = keyWord;
+	}
+	public String getIdx() {
+		return idx;
+	}
+	public void setIdx(String idx) {
+		this.idx = idx;
+	}
+	public String getSearch() {
+		return search;
+	}
+	public void setSearch(String search) {
+		this.search = search;
+	}
 	public int getPaymentId() {
 		return paymentId;
 	}

@@ -79,14 +79,19 @@
 		color: white;
 	}
 	
+	#orderView1 {
+		transition : all 0.3s;
+	}	
 	
-	
+	#orderView1:hover {
+		background-color: #F0F0F0;
+	}
 	
 	#orderByView {
 	    position: absolute; 
 	    top: 230px;
 	    left: 1500px;
-		animation:ani 1s infinite alternate;  
+		animation:ani 2s infinite alternate;  
 		width: 300px;
 		height: 200px;
 		text-align: center;
@@ -111,18 +116,33 @@
 $(document).ready(function(){
 	
 	
-	$('#searchClick').on('click', function(){
+});
+
+
+
+/* function fn_searchClick() {
+	
+		var idx = document.getElementById('idx').value;
+		var keyWord = $("#keyWord").val();
+		
+		alert(idx);
+		alert(keyWord);
 		
 	    $.ajax({
 	        url: "search.do",
 	        type: "POST",
 	        async: false,
 	        dataType: 'json',
-	        data: $('#searchArea').serialize(),
+	        data: JSON.stringify({
+	        	idx : idx,
+	        	keyWord : keyWord
+	        }),
 	        contentType: 'application/json; charset=utf-8',
 	        success: function(data){
+	        	
 	        	console.log(data);
-	        	alert("ggg");
+	        	
+	        	alert("성공");
 	        	
 	        },
 	        error: function(error){
@@ -130,9 +150,9 @@ $(document).ready(function(){
 	        }
 	    });
 		
-	});
+} */
 
-});
+
 
 </script>
 
@@ -143,23 +163,31 @@ $(document).ready(function(){
 		<div>
 			<span>조회순</span>
 			<c:forEach var="orderByView" items="${orderByView }">
-				<ul style="border: 1px solid black; padding: 15px 0px;">
+				<ul id="orderView1" style="border: 1px solid black; padding: 15px 0px;"><a href="selectView.do?paymentId=${orderByView.paymentId }">
 					<li>고객아이디 ${orderByView.customerId }</li>
-					<li><a href="selectView.do?paymentId=${orderByView.paymentId }">번호 ${orderByView.paymentId }</a></li>
+					<li>번호 ${orderByView.paymentId }</li>
 					<li>조회수 ${orderByView.viewCnt }</li>
-				</ul>
+				</a></ul>
 			</c:forEach>
 		</div>
 	</div>
 	
 	<div id="container1">
 		<div style="text-align: center;">
-			<form id="searchArea" method="post">
+<%-- 		<form id="searchArea" method="post">
 				<select name="idx" id="idx" style="padding: 10px 5px 10px 5px;">
 					<option value="0">제목</option>
 					<option value="1">이름</option>
 				</select>
-				<input type="text" id="paymentId" name="paymentId" placeholder="검색하세요." style="padding: 10px 150px 10px 5px;">
+				<input type="text" id="keyWord" name="keyWord" placeholder="검색하세요." style="padding: 10px 150px 10px 5px;">
+				<input type="button" value="검색" id="searchClick" onclick="fn_searchClick();" style="padding: 10px 10px 10px 10px;">			
+			</form> --%>
+			<form action="search.do" method="post">
+				<select name="idx" id="idx" style="padding: 10px 5px 10px 5px;">
+					<option value="0">제목</option>
+					<option value="1">이름</option>
+				</select>
+				<input type="text" id="keyWord" name="keyWord" placeholder="검색하세요." style="padding: 10px 150px 10px 5px;">
 				<input type="submit" value="검색" id="searchClick" style="padding: 10px 10px 10px 10px;">			
 			</form>
 		</div>

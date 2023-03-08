@@ -54,7 +54,7 @@
 		WHERE PAYMENT_ID = #{paymentId}
 	</update>
 
-	<select id="search" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">
+	<select id="search" parameterType="map" resultType="egovframework.Test.main.service.TestBoardServiceVO">
 		SELECT 
 				PAYMENT_ID as paymentId,
 				customer_id as customerId,
@@ -64,8 +64,13 @@
 				LIKE_CNT as likeCnt,
 				ID as id
 		FROM PAYMENT
-		WHERE PAYMENT_ID LIKE #{paymentId}
-		LIMIT 5
+		<if test="idx == 0">
+			WHERE PAYMENT_ID LIKE concat('%', #{keyWord}, '%')
+		</if>
+		<if test="idx == 1">
+			WHERE CUSTOMER_ID LIKE concat('%', #{keyWord}, '%')
+		</if>
+		ORDER BY PAYMENT_ID DESC
 	</select>
 	
 	<select id="orderByView" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">

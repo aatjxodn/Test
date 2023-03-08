@@ -19,7 +19,17 @@ public class TestPagingVO {
 	private int beginPage = 0; // 현재 블록의 시작 페이지 번호
 	private int endPage = 0; // 현재 블록의 끝 페이지 번호
 
+	public String getIdx() {
+		return idx;
+	}
+
+	public void setIdx(String idx) {
+		this.idx = idx;
+	}
+
+
 	private String page;
+	private String idx;
 
 	public String getPage() {
 		return page;

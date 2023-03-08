@@ -38,6 +38,10 @@ public class BoardServiceImpl {
 	public List<TestBoardServiceVO> orderByView(TestBoardServiceVO vo) {
 		return boardServiceDAO.orderByView(vo);
 	}
+
+//	public List<TestBoardServiceVO> search(int begin, int end) {
+//		return boardServiceDAO.search(begin, end);
+//	}
 	
 	
 
