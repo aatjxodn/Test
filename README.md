@@ -1,7 +1,10 @@
 # 개발환경
 프로젝트 기간: 2022.10.14 ~ 2022.10.31
+
 개발 웹서버: Apache Tomcat 8.0
+
 개발 툴: Eclipse IDE, Oracle SQL Developer
+
 사용 언어: Java(JDK 1.8), SQL, JSP & Servlet, HTML/CSS, JavaScript
 
 # Test
