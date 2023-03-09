@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mysql.cj.protocol.a.NativeConstants.IntegerDataType;
+
 import egovframework.Test.main.service.TestBoardServiceVO;
 import egovframework.Test.main.service.TestCommentVO;
 import egovframework.Test.main.service.TestMemberVO;
@@ -101,7 +103,7 @@ public class MainController {
 		
 		TestMemberVO userOut = memberService.logout(vo);
 		
-		System.out.println("userOut : " + userOut);
+		LOGGER.debug("로그아웃 ID : " + userOut);
 		
 		session.invalidate();
 		
@@ -162,7 +164,7 @@ public class MainController {
 		// 유저 가져오기
 		TestMemberVO user = (TestMemberVO) session.getAttribute("user");
 		String userId = user.getId();
-		
+		vo.setId(userId);
 		Cookie viewCookie = null;
 		Cookie[] cookies = request.getCookies();
 
@@ -180,7 +182,11 @@ public class MainController {
 					// 쿠키가 있으니 조회수 증가 x 
 					TestBoardServiceVO selectView = boardService.selectView(vo);
 					int totalSelectCommentList = commentService.totalSelectCommentList(vo2);
-
+					int checkLike = boardService.checkLike(vo);
+					TestBoardServiceVO likeCntTot = boardService.likeCntTot(vo);
+					
+					model.addAttribute("likeCntTot", likeCntTot);
+					model.addAttribute("checkLike", checkLike);
 					model.addAttribute("selectView", selectView);
 					model.addAttribute("totalSelectCommentList", totalSelectCommentList);
 				}
@@ -204,7 +210,11 @@ public class MainController {
 				int totalSelectCommentList = commentService.totalSelectCommentList(vo2);
 				// 상세보기 조회수 조회
 				boardService.viewCount(vo);
+				int checkLike = boardService.checkLike(vo);
+				TestBoardServiceVO likeCntTot = boardService.likeCntTot(vo);
 				
+				model.addAttribute("likeCntTot", likeCntTot);
+				model.addAttribute("checkLike", checkLike);
 				model.addAttribute("selectView", selectView);
 				model.addAttribute("totalSelectCommentList", totalSelectCommentList);
 
@@ -224,26 +234,42 @@ public class MainController {
 	
 	
 	@RequestMapping("/search.do")
-	public String search(TestBoardServiceVO vo, Model model, HttpServletRequest request, TestPagingVO p) {
+	public String search(TestBoardServiceVO vo, Model model, 
+			HttpServletRequest request, TestPagingVO p, HttpServletResponse response) throws IOException {
 		
 		String idx = request.getParameter("idx");
 		int keyWord = Integer.parseInt(request.getParameter("keyWord"));
+		
+		if (String.valueOf(keyWord) == null) {
+			alertUtils.alert(response, "ㅋㅎㅎㅎㅎㅎㅎ");
+		}
 		
 		if (idx.equalsIgnoreCase("0")) {
 			vo.setPaymentId(keyWord);
 			vo.setIdx(idx);
 			
 			List<TestBoardServiceVO> searchList = boardService.search(vo);
+			int searchTot = searchList.size();
+			List<TestBoardServiceVO> orderByView = boardService.orderByView(vo);
+
 			
+			model.addAttribute("orderByView", orderByView);
 			model.addAttribute("searchList", searchList);
+			model.addAttribute("searchTot", searchTot);
+			
 			
 		} else if (idx.equalsIgnoreCase("1")) {
 			vo.setCustomerId(keyWord);
 			vo.setIdx(idx);
 			
 			List<TestBoardServiceVO> searchList = boardService.search(vo);
+			int searchTot = searchList.size();
+			List<TestBoardServiceVO> orderByView = boardService.orderByView(vo);
+
 			
+			model.addAttribute("orderByView", orderByView);
 			model.addAttribute("searchList", searchList);
+			model.addAttribute("searchTot", searchTot);
 			
 		}
 		

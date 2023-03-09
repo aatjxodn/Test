@@ -21,5 +21,17 @@ public interface BoardServiceDAO {
 //	public List<TestBoardServiceVO> search(@Param("begin")int begin, @Param("end") int end);
 	// 게시글 검색 페이징
 	public List<TestBoardServiceVO> search(TestBoardServiceVO vo);
+	// 좋아요 
+	public int updateLikeCnt(TestBoardServiceVO vo);
+	// 좋아요 체크
+	public int insertLikeBoard(TestBoardServiceVO vo);
+	// 좋아요 체크2
+	public int checkLike(TestBoardServiceVO vo);
+	// 좋아요 총개수
+	public TestBoardServiceVO likeCntTot(TestBoardServiceVO vo);
+	// 좋아요 개수 삭제
+	public int cancleLikeCnt(TestBoardServiceVO vo);
+	// 좋아요 테이블 삭제
+	public int deleteLikeBoard(TestBoardServiceVO vo);
 	
 }

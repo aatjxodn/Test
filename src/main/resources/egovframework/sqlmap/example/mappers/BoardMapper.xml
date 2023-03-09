@@ -54,24 +54,6 @@
 		WHERE PAYMENT_ID = #{paymentId}
 	</update>
 
-	<select id="search" parameterType="map" resultType="egovframework.Test.main.service.TestBoardServiceVO">
-		SELECT 
-				PAYMENT_ID as paymentId,
-				customer_id as customerId,
-				staff_id as staffId,
-				rental_id as rentalId,
-				VIEW_CNT as viewCnt,
-				LIKE_CNT as likeCnt,
-				ID as id
-		FROM PAYMENT
-		<if test="idx == 0">
-			WHERE PAYMENT_ID LIKE concat('%', #{keyWord}, '%')
-		</if>
-		<if test="idx == 1">
-			WHERE CUSTOMER_ID LIKE concat('%', #{keyWord}, '%')
-		</if>
-		ORDER BY PAYMENT_ID DESC
-	</select>
 	
 	<select id="orderByView" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">
 		SELECT P.*, PAYMENT_ID as paymentId,
@@ -93,6 +75,70 @@
 		ORDER BY VIEW_CNT DESC
 		LIMIT 5
 	</select>
+	
+	<select id="search" parameterType="map" resultType="egovframework.Test.main.service.TestBoardServiceVO">
+		SELECT P.*, PAYMENT_ID as paymentId,
+		P.customer_id as customerId,
+		P.staff_id as staffId,
+		P.rental_id as rentalId,
+		R_NUM as rNum,
+		P.VIEW_CNT as viewCnt,
+		P.LIKE_CNT as likeCnt,
+		P.ID as id
+		FROM
+		(SELECT ROW_NUMBER() OVER (ORDER BY payment_id DESC) AS
+		R_NUM, P.* FROM
+		payment P) P
+		<if test="idx == 0">
+			WHERE P.PAYMENT_ID LIKE concat('%', #{keyWord}, '%')
+		</if>
+		<if test="idx == 1">
+			WHERE P.CUSTOMER_ID LIKE concat('%', #{keyWord}, '%')
+		</if>
+		ORDER BY PAYMENT_ID DESC
+	</select>
+	
+	<update id="updateLikeCnt" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+		UPDATE PAYMENT
+			SET LIKE_CNT = LIKE_CNT + 1
+		WHERE PAYMENT_ID = #{paymentId}
+	</update>
+	
+	<insert id="insertLikeBoard" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+		INSERT INTO BOARD_LIKE(ID, PAYMENT_ID)
+		VALUES(#{id}, #{paymentId})
+	</insert>
+	
+	<select id="checkLike" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD_LIKE
+		WHERE ID = #{id} AND PAYMENT_ID = #{paymentId}
+	</select>
+	
+	<select id="likeCntTot" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">
+		SELECT PAYMENT_ID as paymentId,
+		customer_id as customerId,
+		staff_id as staffId,
+		rental_id as rentalId,
+		VIEW_CNT as viewCnt,
+		LIKE_CNT as likeCnt,
+		ID as id
+		FROM PAYMENT
+		WHERE PAYMENT_ID = #{paymentId}
+	</select>
+	
+	<!-- 좋아요 삭제 -->
+	<update id="cancleLikeCnt" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+		UPDATE PAYMENT
+			SET LIKE_CNT = LIKE_CNT - 1
+		WHERE PAYMENT_ID = #{paymentId}
+	</update>
+	
+	<delete id="deleteLikeBoard" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+		DELETE FROM BOARD_LIKE
+		WHERE PAYMENT_ID = #{paymentId} AND ID = #{id}
+	</delete>
+	
 	
 
 

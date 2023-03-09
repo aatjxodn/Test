@@ -1,10 +1,12 @@
 package egovframework.Test.main.web;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
@@ -23,6 +25,7 @@ import egovframework.Test.main.service.TestCommentVO;
 import egovframework.Test.main.service.impl.BoardServiceImpl;
 import egovframework.Test.main.service.impl.CommentImpl;
 import egovframework.Test.main.service.impl.MemberImpl;
+import egovframework.common.util.alertUtils;
 
 @RestController
 public class MainAjaxController {
@@ -144,6 +147,44 @@ public class MainAjaxController {
 //		
 //		return null;
 //	}
+	
+	@RequestMapping(value="/likeView.do")
+	@ResponseBody
+	public int updateLikeCnt(TestBoardServiceVO vo, HttpServletResponse response, Model model) throws IOException {
+
+		int null2 = 0;
+		int checkLike = boardService.checkLike(vo);
+		
+		if (checkLike == 0) {
+			boardService.insertLikeBoard(vo);
+			int updateLikeCnt = boardService.updateLikeCnt(vo);
+			
+			model.addAttribute("checkLike", checkLike);
+			
+			return updateLikeCnt;
+		}
+		
+		return null2;
+	}
+	
+	@RequestMapping(value="/cancleLikeView.do")
+	@ResponseBody
+	public int cancleLikeView(TestBoardServiceVO vo, HttpServletResponse response, Model model) throws IOException {
+
+		int null2 = 0;
+		int checkLike = boardService.checkLike(vo);
+		
+		if (checkLike == 1) {
+			int deleteLikeBoard = boardService.deleteLikeBoard(vo);
+			int cancleLikeCnt = boardService.cancleLikeCnt(vo);
+			
+			model.addAttribute("checkLike", checkLike);
+			
+			return cancleLikeCnt;
+		}
+		return null2;
+	}
+	
 	
 	
 

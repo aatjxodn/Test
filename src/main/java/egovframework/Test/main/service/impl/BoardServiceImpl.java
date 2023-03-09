@@ -31,18 +31,40 @@ public class BoardServiceImpl {
 		return boardServiceDAO.viewCount(vo);
 	}
 
-	public List<TestBoardServiceVO> search(TestBoardServiceVO vo) {
-		return boardServiceDAO.search(vo);
-	}
-	
 	public List<TestBoardServiceVO> orderByView(TestBoardServiceVO vo) {
 		return boardServiceDAO.orderByView(vo);
+	}
+	
+	public List<TestBoardServiceVO> search(TestBoardServiceVO vo) {
+		return boardServiceDAO.search(vo);
 	}
 
 //	public List<TestBoardServiceVO> search(int begin, int end) {
 //		return boardServiceDAO.search(begin, end);
 //	}
 	
+	public int updateLikeCnt(TestBoardServiceVO vo) {
+		return boardServiceDAO.updateLikeCnt(vo);
+	}
 	
+	public int insertLikeBoard(TestBoardServiceVO vo) {
+		return boardServiceDAO.insertLikeBoard(vo);
+	}
+	
+	public int checkLike(TestBoardServiceVO vo) {
+		return boardServiceDAO.checkLike(vo);
+	}
+	
+	public TestBoardServiceVO likeCntTot(TestBoardServiceVO vo) {
+		return boardServiceDAO.likeCntTot(vo);
+	}
+	
+	public int cancleLikeCnt(TestBoardServiceVO vo) {
+		return boardServiceDAO.cancleLikeCnt(vo);
+	}
+	
+	public int deleteLikeBoard(TestBoardServiceVO vo) {
+		return boardServiceDAO.deleteLikeBoard(vo);
+	}
 
 }
