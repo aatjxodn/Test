@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.io.ResolverUtil.Test;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -151,38 +152,50 @@ public class MainAjaxController {
 	@RequestMapping(value="/likeView.do")
 	@ResponseBody
 	public int updateLikeCnt(TestBoardServiceVO vo, HttpServletResponse response, Model model) throws IOException {
-
-		int null2 = 0;
-		int checkLike = boardService.checkLike(vo);
 		
+		// 테이블에 좋아료를 누른 아이디와 paymentId가 있는지 체크
+		int checkLike = boardService.checkLike(vo);
+		// 게시글에 like 총개수
+		TestBoardServiceVO likeTot = boardService.likeCntTot(vo);
+		likeTot.getLikeCnt();
+		
+		// checkLike가 없다면
 		if (checkLike == 0) {
+			// row를 하나 생성
 			boardService.insertLikeBoard(vo);
+			// 게시글 좋아요 개수 추가
 			int updateLikeCnt = boardService.updateLikeCnt(vo);
 			
 			model.addAttribute("checkLike", checkLike);
 			
-			return updateLikeCnt;
+			return likeTot.getLikeCnt() + updateLikeCnt;
 		}
 		
-		return null2;
+		return likeTot.getLikeCnt();
 	}
 	
 	@RequestMapping(value="/cancleLikeView.do")
 	@ResponseBody
 	public int cancleLikeView(TestBoardServiceVO vo, HttpServletResponse response, Model model) throws IOException {
-
-		int null2 = 0;
-		int checkLike = boardService.checkLike(vo);
 		
+		// 테이블에 좋아료를 누른 아이디와 paymentId가 있는지 체크
+		int checkLike = boardService.checkLike(vo);
+		// 게시글에 like 총개수
+		TestBoardServiceVO likeTot = boardService.likeCntTot(vo);
+		likeTot.getLikeCnt();
+		
+		// checkLike가 있다면
 		if (checkLike == 1) {
-			int deleteLikeBoard = boardService.deleteLikeBoard(vo);
+			// 있는 row를 삭제
+			boardService.deleteLikeBoard(vo);
+			// 게시글 좋아요 개수 하락
 			int cancleLikeCnt = boardService.cancleLikeCnt(vo);
 			
 			model.addAttribute("checkLike", checkLike);
 			
-			return cancleLikeCnt;
+			return likeTot.getLikeCnt() - cancleLikeCnt;
 		}
-		return null2;
+		return likeTot.getLikeCnt();
 	}
 	
 	

@@ -411,12 +411,13 @@ function fn_likeView() {
 	        	var testHtml = "";
 	        	
 	        	testHtml += "<form id='cancleLikeView' method='post'>"
-	        	testHtml += "<span><input type='button' value='좋아요 취소 ${likeCntTot.likeCnt + 1 }' name='likeCnt' onclick='fn_cancleLikeView();'></span>"
+	        	testHtml += "<span><input type='button' value='좋아요 취소 "+ data +"' name='likeCnt' onclick='fn_cancleLikeView();'></span>"
 	        	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>"
 	        	testHtml += "<input type='hidden' value='${user.id }' name='id'>"
 	        	testHtml += "</form>"
 	        	
 	        	$("#likeArea").html(testHtml);
+	        	$("#boardViewLike").html(data);
 	        	
 	            fn_selectCommentList();
 	            
@@ -430,33 +431,37 @@ function fn_likeView() {
 
 function fn_cancleLikeView() {
 	
-	$.ajax({
-        url: "cancleLikeView.do",
-        type: "POST",
-        async: false,
-        dataType: 'json',
-        data: $('#cancleLikeView').serialize(),
-        success: function(data){
-        	console.log(data);
-
-        	var testHtml = "";
-        	
-        	testHtml += "<form id='likeView' method='post'>"
-        	testHtml += "<span><input type='button' value='좋아요 ${likeCntTot.likeCnt }' name='likeCnt' onclick='fn_likeView();'></span>"
-        	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>"
-        	testHtml += "<input type='hidden' value='${user.id }' name='id'>"
-        	testHtml += "</form>"
-        	
-        	$("#cancleLikeArea").html(testHtml);
-        	
-        	fn_selectCommentList();
-            
-        },
-        error: function(error){
-        	alert("실패 : " + error);  
-        }
-    });
-	
+	var result = confirm('취소 하시겠습니까?');
+	if (result == true) {
+		
+		$.ajax({
+	        url: "cancleLikeView.do",
+	        type: "POST",
+	        async: false,
+	        dataType: 'json',
+	        data: $('#cancleLikeView').serialize(),
+	        success: function(data){
+	        	console.log(data);
+				
+	        	var testHtml = "";
+	        	
+	        	testHtml += "<form id='likeView' method='post'>"
+	        	testHtml += "<span><input type='button' value='좋아요 " + data +"' name='likeCnt' onclick='fn_likeView();'></span>"
+	        	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>"
+	        	testHtml += "<input type='hidden' value='${user.id }' name='id'>"
+	        	testHtml += "</form>"
+	        	
+	        	$("#cancleLikeArea").html(testHtml);
+	        	
+	        	fn_selectCommentList();
+	        	alert("좋아요 취소 완료!");
+	        	location.reload();
+	        },
+	        error: function(error){
+	        	alert("실패 : " + error);  
+	        }
+	    });
+	}
 }
 
 
@@ -475,7 +480,7 @@ function fn_cancleLikeView() {
 			<tr>
 				<td width="20%">${selectView.customerId }</td>
 				<td width="40%">${selectView.paymentId }</td>
-				<td width="20%">${selectView.likeCnt }</td>
+				<td width="20%" id="boardViewLike">${selectView.likeCnt }</td>
 				<td width="20%">${selectView.viewCnt }</td>
 			</tr>
 		</table>
