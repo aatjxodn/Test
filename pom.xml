@@ -15,7 +15,6 @@
 		<egovframework.rte.version>3.5.0</egovframework.rte.version>
 	</properties>
 
-
 	<repositories>
 		<repository>
 			<id>mvn2</id>
