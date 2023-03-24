@@ -33,5 +33,7 @@ public interface BoardServiceDAO {
 	public int cancleLikeCnt(TestBoardServiceVO vo);
 	// 좋아요 테이블 삭제
 	public int deleteLikeBoard(TestBoardServiceVO vo);
+	// 파일 업로드
+	public TestBoardServiceVO insertBoard(TestBoardServiceVO vo);
 	
 }

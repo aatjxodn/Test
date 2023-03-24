@@ -40,6 +40,7 @@ public class MainAjaxController {
 	@Resource(name="commentService")
 	private CommentImpl commentService;
 	
+	
 	@RequestMapping(value="/selectCommentList.do",produces = "application/json; charset=utf8", method=RequestMethod.POST)
 	@ResponseBody
 	public List<TestCommentVO> selectCommentList(TestCommentVO vo, Model model, HttpSession session) {

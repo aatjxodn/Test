@@ -67,4 +67,9 @@ public class BoardServiceImpl {
 		return boardServiceDAO.deleteLikeBoard(vo);
 	}
 
+	public TestBoardServiceVO insertBoard(TestBoardServiceVO vo) {
+		return boardServiceDAO.insertBoard(vo);
+		
+	}
+
 }

@@ -118,6 +118,14 @@ $(document).ready(function(){
 	
 });
 
+function fn_insertBoard() {
+	var result = confirm('글쓰기로 이동 하시겠습니까?');
+	if (result == true) {
+		alert("글쓰기페이지로 이동합니다.");
+		location.href="goInsertBoard.do";
+	}
+}
+
 
 
 /* function fn_searchClick() {
@@ -272,7 +280,8 @@ $(document).ready(function(){
 						<a><i>&#62;&#62;</i></a>
 					</c:if>
 				</li>
-				<li style="display: flex; float: right;"><input type="button" value="글쓰기" style="padding: 5px 20px;"></li>
+				<li style="display: flex; float: right;"><input type="button" value="글쓰기" onclick="fn_insertBoard()" style="padding: 5px 20px;"></li>
+				<li style="display: flex; float: right;"><input type="button" value="gg" onclick="javascript:location.href='sample.do'" style="padding: 5px 20px;"></li>
 			</ul>
 		</div>
 	</div>

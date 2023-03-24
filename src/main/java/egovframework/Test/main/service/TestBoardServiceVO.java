@@ -1,19 +1,57 @@
 package egovframework.Test.main.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class TestBoardServiceVO {
-	private int paymentId, staffId, customerId, rentalId, rNum;
+	private int paymentId, staffId, customerId, rentalId, rNum, rNum2;
 	private String paymentDate, firstName, id, search;
 	private int viewCnt;
 	private int likeCnt;
 	private int keyWord;
 	private String idx;
 	
+	// 파일 업로드 
+	private String fileName;
+	private MultipartFile uploadFile;
+	private String testTitle;
+	private String testContent;
 	
+	
+	public String getTestTitle() {
+		return testTitle;
+	}
+	public void setTestTitle(String testTitle) {
+		this.testTitle = testTitle;
+	}
+	public String getTestContent() {
+		return testContent;
+	}
+	public void setTestContent(String testContent) {
+		this.testContent = testContent;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public MultipartFile getUploadFile() {
+		return uploadFile;
+	}
+	public void setUploadFile(MultipartFile uploadFile) {
+		this.uploadFile = uploadFile;
+	}
 	public int getKeyWord() {
 		return keyWord;
 	}
 	public void setKeyWord(int keyWord) {
 		this.keyWord = keyWord;
+	}
+	public int getrNum2() {
+		return rNum2;
+	}
+	public void setrNum2(int rNum2) {
+		this.rNum2 = rNum2;
 	}
 	public String getIdx() {
 		return idx;

@@ -201,7 +201,7 @@ $(document).ready(function(){
 			</tr>
 			<c:forEach var="searchList" items="${searchList }">
 				<tr id="tr1">
-					<td width="15%">${searchList.rNum }</td>
+					<td width="15%">${searchList.rNum2 }</td>
 					<td id="clickList" width="30%"><a href="selectView.do?paymentId=${searchList.paymentId }">${searchList.paymentId }</a></td>
 					<td width="25%">${searchList.customerId }</td>
 					<td width="15%">${searchList.likeCnt }</td>
@@ -216,7 +216,6 @@ $(document).ready(function(){
 		</table>
 	</div>
 </div>
-
 
 </body>
 </html>

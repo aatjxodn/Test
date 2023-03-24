@@ -61,7 +61,6 @@
 	
 	#layout3 {
 		width: 100%;
-		margin-top: 50px;
 	}
 	
 	#container3 {
@@ -83,6 +82,7 @@
 	
 	#moreButton {
 		padding: 15px 40px;
+		cursor: pointer;
 	}
 	
 	#layout5 {
@@ -99,6 +99,7 @@
 	
 	#listGo {
 		padding: 10px 35px;
+		cursor: pointer;
 	}
 
 	
@@ -411,7 +412,7 @@ function fn_likeView() {
 	        	var testHtml = "";
 	        	
 	        	testHtml += "<form id='cancleLikeView' method='post'>"
-	        	testHtml += "<span><input type='button' value='좋아요 취소 "+ data +"' name='likeCnt' onclick='fn_cancleLikeView();'></span>"
+	        	testHtml += "<span><input type='button' value='좋아요 취소 "+ data +"' name='likeCnt' onclick='fn_cancleLikeView();' style='padding: 10px 20px; background-color: red; color: white; font-weight: bold;'></span>"
 	        	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>"
 	        	testHtml += "<input type='hidden' value='${user.id }' name='id'>"
 	        	testHtml += "</form>"
@@ -419,7 +420,6 @@ function fn_likeView() {
 	        	$("#likeArea").html(testHtml);
 	        	$("#boardViewLike").html(data);
 	        	
-	            fn_selectCommentList();
 	            
 	        },
 	        error: function(error){
@@ -427,12 +427,13 @@ function fn_likeView() {
 	        }
 	    });
 	 
+
 }
 
 function fn_cancleLikeView() {
 	
-	var result = confirm('취소 하시겠습니까?');
-	if (result == true) {
+//	var result = confirm('취소 하시겠습니까?');
+//	if (result == true) {
 		
 		$.ajax({
 	        url: "cancleLikeView.do",
@@ -446,22 +447,23 @@ function fn_cancleLikeView() {
 	        	var testHtml = "";
 	        	
 	        	testHtml += "<form id='likeView' method='post'>"
-	        	testHtml += "<span><input type='button' value='좋아요 " + data +"' name='likeCnt' onclick='fn_likeView();'></span>"
+	        	testHtml += "<span><input type='button' value='좋아요 " + data +"' name='likeCnt' onclick='fn_likeView();' style='padding: 10px 20px; background-color: white; font-weight: bold;'></span>"
 	        	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>"
-	        	testHtml += "<input type='hidden' value='${user.id }' name='id'>"
+	        	testHtml += "<input type='hidden' valu1231e='${user.id }' name='id'>"
 	        	testHtml += "</form>"
 	        	
 	        	$("#cancleLikeArea").html(testHtml);
+	        	$("#boardViewLike").html(data);
 	        	
-	        	fn_selectCommentList();
-	        	alert("좋아요 취소 완료!");
-	        	location.reload();
+//	        	alert("좋아요 취소 완료!");
+//	        	location.reload();
 	        },
 	        error: function(error){
 	        	alert("실패 : " + error);  
 	        }
 	    });
-	}
+//	}
+
 }
 
 
@@ -493,8 +495,8 @@ function fn_cancleLikeView() {
 			<table>
 				<tr>
 					<th style="width: 15%;">${user.id }</th>
-					<td style="width: 65%;"><input type="text" id="commentArea" value="" name="comment" placeholder="댓글을 입력하세요" style="width: 100%; border: none; border-left: 1px solid #ccc; padding: 10px;"></td>
-					<td style="width: 20%;"><input type="button" value="작성" id="insertClick" style="width: 100%; padding: 10px;"></td>
+					<td style="width: 65%;"><input type="text" id="commentArea" value="" name="comment" placeholder="댓글을 입력하세요" style="width: 100%; border: none; border-left: 1px solid #ccc; padding: 10px; cursor: pointer;"></td>
+					<td style="width: 20%;"><input type="button" value="작성" id="insertClick" style="width: 100%; padding: 10px; cursor: pointer;"></td>
 					<td style="display: none;"><input type="hidden" value="${selectView.paymentId }" name="paymentId"></td>
 					<td style="display: none;"><input type="hidden" value="${user.id }" name="id"></td>
 					<td style="display: none;"><input type="hidden" id="limit" value="5" name="limit"></td>
@@ -502,18 +504,18 @@ function fn_cancleLikeView() {
 			</table>
 		</form>
 		<c:if test="${checkLike == 1 }">
-			<div id="cancleLikeArea">
+			<div id="cancleLikeArea" style="display: block; margin-top: 50px; margin-left: 480px;">
 				<form id="cancleLikeView" method="post">
-					<span><input type="button" value="좋아요 취소 ${likeCntTot.likeCnt }" name="likeCnt" onclick="fn_cancleLikeView();"></span>
+					<span><input type="button" value="좋아요 취소 ${likeCntTot.likeCnt }" name="likeCnt" onclick="fn_cancleLikeView();" style="padding: 10px 20px; background-color: red; color: white; font-weight: bold; cursor: pointer;"></span>
 					<input type="hidden" value="${selectView.paymentId }" name="paymentId">
 					<input type="hidden" value="${user.id }" name="id">
 				</form>
 			</div>
 		</c:if>
 		<c:if test="${checkLike == 0 }">
-			<div id="likeArea">
+			<div id="likeArea" style="display: block; margin-top: 50px; margin-left: 480px;">
 				<form id="likeView" method="post">
-					<span><input type="button" value="좋아요 ${likeCntTot.likeCnt }" name="likeCnt" onclick="fn_likeView();"></span>
+					<span><input type="button" value="좋아요 ${likeCntTot.likeCnt }" name="likeCnt" onclick="fn_likeView();" style="padding: 10px 20px; background-color: white; font-weight: bold; cursor: pointer;"></span>
 					<input type="hidden" value="${selectView.paymentId }" name="paymentId">
 					<input type="hidden" value="${user.id }" name="id">
 				</form>
@@ -541,8 +543,6 @@ function fn_cancleLikeView() {
 		<input type="button" value="목록가기" onclick="javascript:location.href='selectBoardList.do'" id="listGo">
 	</div>
 </div>
-
-
 
 </body>
 </html>

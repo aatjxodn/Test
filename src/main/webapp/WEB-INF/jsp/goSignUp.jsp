@@ -76,7 +76,6 @@ const autoHyphen2 = (target) => {
 					  $("#th_html0").css('font-size', '8px');
 					  $('#th_html0').css('color', '#d32f2f');
 					  $("#id").focus();
-					  $("#id").val("");
 	                  
 	              } else {
 	                  alert("사용가능한 아이디입니다.");  

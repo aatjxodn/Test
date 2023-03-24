@@ -1,7 +1,9 @@
 package egovframework.Test.main.web;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -9,12 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mysql.cj.protocol.a.NativeConstants.IntegerDataType;
 
@@ -42,15 +47,21 @@ public class MainController {
 	@Resource(name = "commentService")
 	private CommentImpl commentService;
 
+	
+	
 	@RequestMapping("/main.do")
 	public String mainPage() {
 		return "login";
 	}
-
 	
 	@RequestMapping("/goSignUp.do")
 	public String goSignUp() {
 		return "/goSignUp";
+	}
+	
+	@RequestMapping("/sample.do")
+	public String sample() {
+		return "sample";
 	}
 
 	
@@ -99,7 +110,7 @@ public class MainController {
 	}
 
 	@RequestMapping("/logout.do")
-	public String logout(TestMemberVO vo, HttpSession session) {
+	public String logout(TestMemberVO vo, HttpSession session, HttpServletResponse response) {
 		
 		TestMemberVO userOut = memberService.logout(vo);
 		
@@ -107,7 +118,7 @@ public class MainController {
 		
 		session.invalidate();
 		
-		return "/login";
+		return "redirect:/main.do";
 	}
 
 	@RequestMapping("/selectBoardList.do")
@@ -118,8 +129,7 @@ public class MainController {
 		TestMemberVO user = (TestMemberVO) session.getAttribute("user");
 
 		if (user == null) {
-			alertUtils.alert(response, "아이디 기록이 없습니다.");
-			return "/login";
+			alertUtils.alertAndMovePage(response, "아이디 기록이 없습니다.", "main.do");
 		}
 		
 		String localIp = StringUtils.IPetRemoteAddr(request);
@@ -159,15 +169,20 @@ public class MainController {
 	public String selectView(
 			@RequestParam(value = "paymentId") String paymentId,
 			TestBoardServiceVO vo, TestCommentVO vo2, Model model,
-			HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+			HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 		
 		// 유저 가져오기
 		TestMemberVO user = (TestMemberVO) session.getAttribute("user");
+		// 유저가 없다면 로그인화면으로 이동
+		if (user == null) {
+			alertUtils.alertAndMovePage(response, "아이디 기록이 없습니다.", "main.do");
+		}
+		
 		String userId = user.getId();
 		vo.setId(userId);
 		Cookie viewCookie = null;
 		Cookie[] cookies = request.getCookies();
-
+		
 		System.out.println("cookie : " + cookies);
 
 		if (cookies != null) {
@@ -240,8 +255,9 @@ public class MainController {
 		String idx = request.getParameter("idx");
 		int keyWord = Integer.parseInt(request.getParameter("keyWord"));
 		
+		
 		if (String.valueOf(keyWord) == null) {
-			alertUtils.alert(response, "ㅋㅎㅎㅎㅎㅎㅎ");
+			alertUtils.alert(response, "검색어가 없습니다.");
 		}
 		
 		if (idx.equalsIgnoreCase("0")) {
@@ -273,8 +289,59 @@ public class MainController {
 			
 		}
 		
-		
 		return "/search";
 	}
+	
+	@RequestMapping("/goInsertBoard.do")
+	public String goInsertBoard() {
+		return "insertBoard";
+	}
+	
+	// 글쓰기
+    @RequestMapping(value = "/insertBoard.do")
+    public String write(@ModelAttribute("vo") TestBoardServiceVO vo) throws Exception {
+ 
+        // 파일 업로드 처리
+        String fileName = null;
+        MultipartFile uploadFile = vo.getUploadFile();
+        if (!uploadFile.isEmpty()) {
+            String originalFileName = uploadFile.getOriginalFilename();
+            String ext = FilenameUtils.getExtension(originalFileName); // 확장자 구하기
+            UUID uuid = UUID.randomUUID(); // UUID 구하기
+            fileName = uuid + "." + ext;
+            uploadFile.transferTo(new File("D:/egovTest/eGovFrameDev-3.10.0-64bit/workspace/Test/src/main/webapp/images/egovframework/upload/" + fileName));
+        }
+        vo.setFileName(fileName);
+ 
+        System.out.println(vo.getFileName());
+ 
+        boardService.insertBoard(vo);
+ 
+        return "redirect:selectBoardList.do";
+    }
+ 
+    // 글수정
+//    @RequestMapping(value = "/updateTest.do")
+//    public String updateTest(@ModelAttribute("testVo") TestVo testVo, HttpServletRequest request) throws Exception {
+//        
+//        // 파일 업로드
+//        String fileName = null;
+//        MultipartFile uploadFile = testVo.getUploadFile();
+//        if (!uploadFile.isEmpty()) {
+//            String originalFileName = uploadFile.getOriginalFilename();
+//            String ext = FilenameUtils.getExtension(originalFileName); // 확장자구하기
+//            UUID uuid = UUID.randomUUID(); // uuid구하기
+//            fileName = uuid + "." + ext;
+//            uploadFile.transferTo(new File("D:\\upload\\" + fileName));
+//            testVo.setFileName(fileName);
+//        }else{
+//        	boardService.updateTest(testVo);
+//            return "redirect:testDetail.do?testId=" + testVo.getTestId();
+//        }
+//        
+//        boardService.updateTest(testVo);
+//        return "redirect:testDetail.do?testId=" + testVo.getTestId();
+//    }
+
 
 }

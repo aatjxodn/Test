@@ -1,5 +1,7 @@
 package egovframework.Test.main.service;
 
+import java.util.List;
+
 import egovframework.Test.main.service.impl.BoardServiceImpl;
 
 public class TestPagingVO {
@@ -169,8 +171,8 @@ public class TestPagingVO {
 			p.setEndPage(p.getTotalPage());
 		}
 	}
-	
 
+	
 	@Override
 	public String toString() {
 		return "Paging [nowPage=" + nowPage + ", nowBlock=" + nowBlock
@@ -180,6 +182,7 @@ public class TestPagingVO {
 				+ end + ", beginPage=" + beginPage + ", endPage=" + endPage
 				+ "]";
 	}
+
 
 	
 

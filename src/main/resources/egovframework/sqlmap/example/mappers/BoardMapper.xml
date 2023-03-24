@@ -76,19 +76,19 @@
 		LIMIT 5
 	</select>
 	
-	<select id="search" parameterType="map" resultType="egovframework.Test.main.service.TestBoardServiceVO">
-		SELECT P.*, PAYMENT_ID as paymentId,
+	<select id="search" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">
+		SET @ROWNUM := 0;
+
+		SELECT P.*, 
+		@ROWNUM:=@ROWNUM+1 AS rNum2, 
+		P.PAYMENT_ID AS paymentId,
 		P.customer_id as customerId,
 		P.staff_id as staffId,
 		P.rental_id as rentalId,
-		R_NUM as rNum,
 		P.VIEW_CNT as viewCnt,
 		P.LIKE_CNT as likeCnt,
 		P.ID as id
-		FROM
-		(SELECT ROW_NUMBER() OVER (ORDER BY payment_id DESC) AS
-		R_NUM, P.* FROM
-		payment P) P
+		FROM PAYMENT P
 		<if test="idx == 0">
 			WHERE P.PAYMENT_ID LIKE concat('%', #{keyWord}, '%')
 		</if>
@@ -138,6 +138,22 @@
 		DELETE FROM BOARD_LIKE
 		WHERE PAYMENT_ID = #{paymentId} AND ID = #{id}
 	</delete>
+	
+	<!-- 게시글 삽입 -->
+    <insert id="insertBoard" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+        <![CDATA[
+        INSERT INTO PAYMENT(TEST_TITLE, TEST_CONTENT, FILE_NAME, CUSTOMER_ID, STAFF_ID, RENTAL_ID, AMOUNT, VIEW_CNT, LIKE_CNT)
+        VALUES(#{testTitle}, #{testContent}, #{fileName}, 1000, 1, 1000, 0.1, 0, 0)
+        ]]>
+    </insert>
+    
+    <!-- 게시글 수정 -->
+<!--     <update id="updateTest" parameterType="egovframework.example.ivory.vo.TestVo">
+        UPDATE test SET
+        testTitle = #{testTitle}, testContent = #{testContent}, fileName = #{fileName}
+        WHERE testId = #{testId}
+    </update> -->
+	
 	
 	
 
