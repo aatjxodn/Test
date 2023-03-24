@@ -30,6 +30,7 @@
 
 			</tbody>
 		</table>
+		<input type="hidden" value="${user.id }" name="id">
 	</form>
 
 </body>

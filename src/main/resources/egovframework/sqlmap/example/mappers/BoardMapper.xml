@@ -2,24 +2,32 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="egovframework.Test.main.service.dao.BoardServiceDAO">
+<mapper
+	namespace="egovframework.Test.main.service.dao.BoardServiceDAO">
 
-	<select resultType="egovframework.Test.main.service.TestBoardServiceVO" parameterType="map" id="selectBoardList">
+	<select
+		resultType="egovframework.Test.main.service.TestBoardServiceVO"
+		parameterType="map" id="selectBoardList">
 		SELECT P.*, PAYMENT_ID as paymentId,
 		P.customer_id as customerId,
 		P.staff_id as staffId,
-		P.rental_id as rentalId,
+		P.rental_id as
+		rentalId,
 		C.FIRST_NAME as firstName,
 		R_NUM as rNum,
-		P.VIEW_CNT as viewCnt,
+		P.VIEW_CNT as
+		viewCnt,
 		P.LIKE_CNT as likeCnt,
 		P.ID as id
 		FROM
-		(SELECT ROW_NUMBER() OVER (ORDER BY payment_id DESC) AS
+		(SELECT ROW_NUMBER() OVER
+		(ORDER BY payment_id DESC) AS
 		R_NUM, P.* FROM
 		payment P) P
-		LEFT JOIN customer C ON P.customer_id = C.customer_id
-		LEFT JOIN staff S ON P.staff_id = S.staff_id
+		LEFT JOIN
+		customer C ON P.customer_id = C.customer_id
+		LEFT JOIN staff S ON
+		P.staff_id = S.staff_id
 		LEFT JOIN rental R ON P.rental_id = R.rental_id
 		WHERE R_NUM BETWEEN #{begin} AND #{end}
 	</select>
@@ -31,12 +39,15 @@
 		ROW_NUMBER() OVER (ORDER BY payment_id DESC) AS R_NUM, P.* FROM
 		payment P) P
 		LEFT JOIN customer C ON P.customer_id = C.customer_id
-		LEFT JOIN staff S ON P.staff_id = S.staff_id
+		LEFT
+		JOIN staff S ON P.staff_id = S.staff_id
 		LEFT JOIN rental R ON
 		P.rental_id = R.rental_id
 	</select>
 
-	<select id="selectView" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">
+	<select id="selectView"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO"
+		resultType="egovframework.Test.main.service.TestBoardServiceVO">
 		SELECT PAYMENT_ID as paymentId,
 		customer_id as customerId,
 		staff_id as staffId,
@@ -45,42 +56,56 @@
 		LIKE_CNT as likeCnt,
 		ID as id
 		FROM PAYMENT
-		WHERE PAYMENT_ID = #{paymentId}
+		WHERE PAYMENT_ID =
+		#{paymentId}
 	</select>
 
-	<update id="viewCount" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+	<update id="viewCount"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
 		UPDATE PAYMENT
 		SET VIEW_CNT = VIEW_CNT + 1
-		WHERE PAYMENT_ID = #{paymentId}
+		WHERE
+		PAYMENT_ID = #{paymentId}
 	</update>
 
-	
-	<select id="orderByView" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">
+
+	<select id="orderByView"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO"
+		resultType="egovframework.Test.main.service.TestBoardServiceVO">
 		SELECT P.*, PAYMENT_ID as paymentId,
-		P.customer_id as customerId,
+		P.customer_id as
+		customerId,
 		P.staff_id as staffId,
 		P.rental_id as rentalId,
-		C.FIRST_NAME as firstName,
+		C.FIRST_NAME
+		as firstName,
 		R_NUM as rNum,
 		P.VIEW_CNT as viewCnt,
-		P.LIKE_CNT as likeCnt,
+		P.LIKE_CNT as
+		likeCnt,
 		P.ID as id
 		FROM
-		(SELECT ROW_NUMBER() OVER (ORDER BY payment_id DESC) AS
+		(SELECT ROW_NUMBER() OVER (ORDER BY payment_id
+		DESC) AS
 		R_NUM, P.* FROM
 		payment P) P
-		LEFT JOIN customer C ON P.customer_id = C.customer_id
-		LEFT JOIN staff S ON P.staff_id = S.staff_id
+		LEFT JOIN customer C ON
+		P.customer_id = C.customer_id
+		LEFT JOIN staff S ON P.staff_id =
+		S.staff_id
 		LEFT JOIN rental R ON P.rental_id = R.rental_id
-		ORDER BY VIEW_CNT DESC
+		ORDER BY
+		VIEW_CNT DESC
 		LIMIT 5
 	</select>
-	
-	<select id="search" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">
+
+	<select id="search"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO"
+		resultType="egovframework.Test.main.service.TestBoardServiceVO">
 		SET @ROWNUM := 0;
 
-		SELECT P.*, 
-		@ROWNUM:=@ROWNUM+1 AS rNum2, 
+		SELECT P.*,
+		@ROWNUM:=@ROWNUM+1 AS rNum2,
 		P.PAYMENT_ID AS paymentId,
 		P.customer_id as customerId,
 		P.staff_id as staffId,
@@ -97,25 +122,33 @@
 		</if>
 		ORDER BY PAYMENT_ID DESC
 	</select>
-	
-	<update id="updateLikeCnt" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+
+	<update id="updateLikeCnt"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
 		UPDATE PAYMENT
-			SET LIKE_CNT = LIKE_CNT + 1
+		SET LIKE_CNT = LIKE_CNT + 1
 		WHERE PAYMENT_ID = #{paymentId}
 	</update>
-	
-	<insert id="insertLikeBoard" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+
+	<insert id="insertLikeBoard"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
 		INSERT INTO BOARD_LIKE(ID, PAYMENT_ID)
-		VALUES(#{id}, #{paymentId})
+		VALUES(#{id},
+		#{paymentId})
 	</insert>
-	
-	<select id="checkLike" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="int">
+
+	<select id="checkLike"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO"
+		resultType="int">
 		SELECT COUNT(*)
 		FROM BOARD_LIKE
-		WHERE ID = #{id} AND PAYMENT_ID = #{paymentId}
+		WHERE ID = #{id} AND
+		PAYMENT_ID = #{paymentId}
 	</select>
-	
-	<select id="likeCntTot" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">
+
+	<select id="likeCntTot"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO"
+		resultType="egovframework.Test.main.service.TestBoardServiceVO">
 		SELECT PAYMENT_ID as paymentId,
 		customer_id as customerId,
 		staff_id as staffId,
@@ -124,38 +157,53 @@
 		LIKE_CNT as likeCnt,
 		ID as id
 		FROM PAYMENT
-		WHERE PAYMENT_ID = #{paymentId}
+		WHERE PAYMENT_ID =
+		#{paymentId}
 	</select>
-	
-	<!-- 좋아요 삭제 -->
-	<update id="cancleLikeCnt" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+
+	<!-- 좋아요 숫자 삭제 -->
+	<update id="cancleLikeCnt"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
 		UPDATE PAYMENT
-			SET LIKE_CNT = LIKE_CNT - 1
+		SET LIKE_CNT = LIKE_CNT - 1
 		WHERE PAYMENT_ID = #{paymentId}
 	</update>
-	
-	<delete id="deleteLikeBoard" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+
+	<!-- 좋아요 삭제 -->
+	<delete id="deleteLikeBoard"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
 		DELETE FROM BOARD_LIKE
-		WHERE PAYMENT_ID = #{paymentId} AND ID = #{id}
+		WHERE PAYMENT_ID = #{paymentId}
+		AND ID = #{id}
 	</delete>
-	
+
 	<!-- 게시글 삽입 -->
-    <insert id="insertBoard" parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+	<insert id="insertBoard"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
         <![CDATA[
-        INSERT INTO PAYMENT(TEST_TITLE, TEST_CONTENT, FILE_NAME, CUSTOMER_ID, STAFF_ID, RENTAL_ID, AMOUNT, VIEW_CNT, LIKE_CNT)
-        VALUES(#{testTitle}, #{testContent}, #{fileName}, 1000, 1, 1000, 0.1, 0, 0)
+        INSERT INTO TEST_BOARD(TEST_TITLE, TEST_CONTENT, FILE_NAME, ID, ORI_FILE_NAME)
+        VALUES(#{testTitle}, #{testContent}, #{fileName}, #{id}, #{oriFileName})
         ]]>
-    </insert>
-    
-    <!-- 게시글 수정 -->
-<!--     <update id="updateTest" parameterType="egovframework.example.ivory.vo.TestVo">
-        UPDATE test SET
-        testTitle = #{testTitle}, testContent = #{testContent}, fileName = #{fileName}
-        WHERE testId = #{testId}
-    </update> -->
-	
-	
-	
+	</insert>
+
+	<select id="selectTestRownum" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">
+		SET @TEST_ROWNUM := 0;
+		SELECT *,
+			@TEST_ROWNUM:=@TEST_ROWNUM+1 AS TEST_ROWNUM
+		FROM TEST_BOARD
+		ORDER BY TEST_NUM
+	</select>
+
+	<!-- 게시글 수정 -->
+	<update id="updateBoard"
+		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+		UPDATE TEST_BOARD
+		SET TEST_TITLE = #{testTitle},
+		TEST_CONTENT = #{testContent},
+		FILE_NAME = #{fileName]
+		WHERE ID = #{id}
+		AND TEST_NUM = #{testNum}
+	</update>
 
 
 </mapper>

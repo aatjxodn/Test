@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mysql.cj.protocol.a.NativeConstants.IntegerDataType;
 
 import egovframework.Test.main.service.TestBoardServiceVO;
 import egovframework.Test.main.service.TestCommentVO;
@@ -304,8 +303,10 @@ public class MainController {
         // 파일 업로드 처리
         String fileName = null;
         MultipartFile uploadFile = vo.getUploadFile();
+        
         if (!uploadFile.isEmpty()) {
             String originalFileName = uploadFile.getOriginalFilename();
+            vo.setOriFileName(originalFileName);
             String ext = FilenameUtils.getExtension(originalFileName); // 확장자 구하기
             UUID uuid = UUID.randomUUID(); // UUID 구하기
             fileName = uuid + "." + ext;
@@ -313,35 +314,33 @@ public class MainController {
         }
         vo.setFileName(fileName);
  
-        System.out.println(vo.getFileName());
- 
         boardService.insertBoard(vo);
  
         return "redirect:selectBoardList.do";
     }
- 
-    // 글수정
-//    @RequestMapping(value = "/updateTest.do")
-//    public String updateTest(@ModelAttribute("testVo") TestVo testVo, HttpServletRequest request) throws Exception {
-//        
-//        // 파일 업로드
-//        String fileName = null;
-//        MultipartFile uploadFile = testVo.getUploadFile();
-//        if (!uploadFile.isEmpty()) {
-//            String originalFileName = uploadFile.getOriginalFilename();
-//            String ext = FilenameUtils.getExtension(originalFileName); // 확장자구하기
-//            UUID uuid = UUID.randomUUID(); // uuid구하기
-//            fileName = uuid + "." + ext;
-//            uploadFile.transferTo(new File("D:\\upload\\" + fileName));
-//            testVo.setFileName(fileName);
-//        }else{
-//        	boardService.updateTest(testVo);
-//            return "redirect:testDetail.do?testId=" + testVo.getTestId();
-//        }
-//        
-//        boardService.updateTest(testVo);
-//        return "redirect:testDetail.do?testId=" + testVo.getTestId();
-//    }
 
+	// 글수정
+    @RequestMapping(value = "/updateTest.do")
+    public String updateTest(@ModelAttribute("testVo") TestBoardServiceVO vo, HttpServletRequest request) throws Exception {
+        
+        // 파일 업로드
+        String fileName = null;
+        MultipartFile uploadFile = vo.getUploadFile();
+        if (!uploadFile.isEmpty()) {
+            String originalFileName = uploadFile.getOriginalFilename();
+            String ext = FilenameUtils.getExtension(originalFileName); // 확장자구하기
+            UUID uuid = UUID.randomUUID(); // uuid구하기
+            fileName = uuid + "." + ext;
+            uploadFile.transferTo(new File("D:/egovTest/eGovFrameDev-3.10.0-64bit/workspace/Test/src/main/webapp/images/egovframework/upload/" + fileName));
+            vo.setFileName(fileName);
+        }else{
+        	boardService.updateBoard(vo);
+        	return "redirect:selectBoardList.do";
+        }
+        
+        boardService.updateBoard(vo);
+        return "redirect:selectBoardList.do";
+        // return "redirect:testDetail.do?testId=" + vo.getPaymentId();
+    }
 
 }

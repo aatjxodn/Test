@@ -15,8 +15,30 @@ public class TestBoardServiceVO {
 	private MultipartFile uploadFile;
 	private String testTitle;
 	private String testContent;
+	private String oriFileName;
+	private int testNum;
+	private int testRownum;
 	
 	
+	
+	public int getTestRownum() {
+		return testRownum;
+	}
+	public void setTestRownum(int testRownum) {
+		this.testRownum = testRownum;
+	}
+	public int getTestNum() {
+		return testNum;
+	}
+	public void setTestNum(int testNum) {
+		this.testNum = testNum;
+	}
+	public String getOriFileName() {
+		return oriFileName;
+	}
+	public void setOriFileName(String oriFileName) {
+		this.oriFileName = oriFileName;
+	}
 	public String getTestTitle() {
 		return testTitle;
 	}

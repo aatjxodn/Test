@@ -67,9 +67,17 @@ public class BoardServiceImpl {
 		return boardServiceDAO.deleteLikeBoard(vo);
 	}
 
-	public TestBoardServiceVO insertBoard(TestBoardServiceVO vo) {
-		return boardServiceDAO.insertBoard(vo);
+	public void insertBoard(TestBoardServiceVO vo) {
+		boardServiceDAO.insertBoard(vo);
 		
+	}
+	
+	public void updateBoard(TestBoardServiceVO vo) {
+		boardServiceDAO.updateBoard(vo);
+	}
+	
+	public List<TestBoardServiceVO> selectTestRownum(TestBoardServiceVO vo) {
+		return boardServiceDAO.selectTestRownum(vo);
 	}
 
 }
