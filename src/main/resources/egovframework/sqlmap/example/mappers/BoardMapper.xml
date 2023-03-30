@@ -6,8 +6,7 @@
 	namespace="egovframework.Test.main.service.dao.BoardServiceDAO">
 
 	<select
-		resultType="egovframework.Test.main.service.TestBoardServiceVO"
-		parameterType="map" id="selectBoardList">
+		resultType="TestBoardServiceVO" parameterType="map" id="selectBoardList">
 		SELECT P.*, PAYMENT_ID as paymentId,
 		P.customer_id as customerId,
 		P.staff_id as staffId,
@@ -45,9 +44,7 @@
 		P.rental_id = R.rental_id
 	</select>
 
-	<select id="selectView"
-		parameterType="egovframework.Test.main.service.TestBoardServiceVO"
-		resultType="egovframework.Test.main.service.TestBoardServiceVO">
+	<select id="selectView"	parameterType="TestBoardServiceVO" resultType="TestBoardServiceVO">
 		SELECT PAYMENT_ID as paymentId,
 		customer_id as customerId,
 		staff_id as staffId,
@@ -60,8 +57,7 @@
 		#{paymentId}
 	</select>
 
-	<update id="viewCount"
-		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+	<update id="viewCount" parameterType="TestBoardServiceVO">
 		UPDATE PAYMENT
 		SET VIEW_CNT = VIEW_CNT + 1
 		WHERE
@@ -69,9 +65,7 @@
 	</update>
 
 
-	<select id="orderByView"
-		parameterType="egovframework.Test.main.service.TestBoardServiceVO"
-		resultType="egovframework.Test.main.service.TestBoardServiceVO">
+	<select id="orderByView" parameterType="TestBoardServiceVO" resultType="TestBoardServiceVO">
 		SELECT P.*, PAYMENT_ID as paymentId,
 		P.customer_id as
 		customerId,
@@ -99,9 +93,7 @@
 		LIMIT 5
 	</select>
 
-	<select id="search"
-		parameterType="egovframework.Test.main.service.TestBoardServiceVO"
-		resultType="egovframework.Test.main.service.TestBoardServiceVO">
+	<select id="search" parameterType="TestBoardServiceVO" resultType="TestBoardServiceVO">
 		SET @ROWNUM := 0;
 
 		SELECT P.*,
@@ -123,32 +115,26 @@
 		ORDER BY PAYMENT_ID DESC
 	</select>
 
-	<update id="updateLikeCnt"
-		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+	<update id="updateLikeCnt" parameterType="TestBoardServiceVO">
 		UPDATE PAYMENT
 		SET LIKE_CNT = LIKE_CNT + 1
 		WHERE PAYMENT_ID = #{paymentId}
 	</update>
 
-	<insert id="insertLikeBoard"
-		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+	<insert id="insertLikeBoard" parameterType="TestBoardServiceVO">
 		INSERT INTO BOARD_LIKE(ID, PAYMENT_ID)
 		VALUES(#{id},
 		#{paymentId})
 	</insert>
 
-	<select id="checkLike"
-		parameterType="egovframework.Test.main.service.TestBoardServiceVO"
-		resultType="int">
+	<select id="checkLike" parameterType="TestBoardServiceVO" resultType="int">
 		SELECT COUNT(*)
 		FROM BOARD_LIKE
 		WHERE ID = #{id} AND
 		PAYMENT_ID = #{paymentId}
 	</select>
 
-	<select id="likeCntTot"
-		parameterType="egovframework.Test.main.service.TestBoardServiceVO"
-		resultType="egovframework.Test.main.service.TestBoardServiceVO">
+	<select id="likeCntTot" parameterType="TestBoardServiceVO" resultType="TestBoardServiceVO">
 		SELECT PAYMENT_ID as paymentId,
 		customer_id as customerId,
 		staff_id as staffId,
@@ -162,8 +148,7 @@
 	</select>
 
 	<!-- 좋아요 숫자 삭제 -->
-	<update id="cancleLikeCnt"
-		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+	<update id="cancleLikeCnt" parameterType="TestBoardServiceVO">
 		UPDATE PAYMENT
 		SET LIKE_CNT = LIKE_CNT - 1
 		WHERE PAYMENT_ID = #{paymentId}
@@ -178,15 +163,14 @@
 	</delete>
 
 	<!-- 게시글 삽입 -->
-	<insert id="insertBoard"
-		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+	<insert id="insertBoard" parameterType="TestBoardServiceVO">
         <![CDATA[
         INSERT INTO TEST_BOARD(TEST_TITLE, TEST_CONTENT, FILE_NAME, ID, ORI_FILE_NAME)
         VALUES(#{testTitle}, #{testContent}, #{fileName}, #{id}, #{oriFileName})
         ]]>
 	</insert>
 
-	<select id="selectTestRownum" parameterType="egovframework.Test.main.service.TestBoardServiceVO" resultType="egovframework.Test.main.service.TestBoardServiceVO">
+	<select id="selectTestRownum" parameterType="TestBoardServiceVO" resultType="TestBoardServiceVO">
 		SET @TEST_ROWNUM := 0;
 		SELECT *,
 			@TEST_ROWNUM:=@TEST_ROWNUM+1 AS TEST_ROWNUM
@@ -195,8 +179,7 @@
 	</select>
 
 	<!-- 게시글 수정 -->
-	<update id="updateBoard"
-		parameterType="egovframework.Test.main.service.TestBoardServiceVO">
+	<update id="updateBoard" parameterType="TestBoardServiceVO">
 		UPDATE TEST_BOARD
 		SET TEST_TITLE = #{testTitle},
 		TEST_CONTENT = #{testContent},

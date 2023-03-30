@@ -4,21 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.Test.main.service.dao.MemberDAO">
 
-	<select parameterType="egovframework.Test.main.service.TestMemberVO"
-			id="login" resultType="egovframework.Test.main.service.TestMemberVO">
+	<select parameterType="TestMemberVO" id="login" resultType="TestMemberVO">
 		SELECT ID, NAME, PASSWORD, EMAIL, PHONE
 		FROM TESTMEMBERSEO
 		WHERE ID = #{id} AND PASSWORD = #{password}
 	</select>
 	
-	<select parameterType="egovframework.Test.main.service.TestMemberVO"
-			id="logout" resultType="egovframework.Test.main.service.TestMemberVO">
+	<select parameterType="TestMemberVO" id="logout" resultType="TestMemberVO">
 		SELECT ID, NAME, PASSWORD, EMAIL, PHONE
 		FROM TESTMEMBERSEO
 		WHERE ID = #{id} AND PASSWORD = #{password}
 	</select>
 	
-	<insert parameterType="egovframework.Test.main.service.TestMemberVO" id="signUp">
+	<insert parameterType="TestMemberVO" id="signUp">
 		INSERT INTO TESTMEMBERSEO(ID, NAME, PASSWORD, EMAIL, PHONE)
 		VALUES(#{id}, #{name}, #{password}, #{email}, #{phone}) 
 	</insert>
@@ -29,7 +27,7 @@
 		WHERE ID = #{id} 
 	</select>
 	
-	<select id="admin_ipCheck" parameterType="egovframework.Test.main.service.TestMemberVO" resultType="String">
+	<select id="admin_ipCheck" parameterType="TestMemberVO" resultType="String">
 		SELECT
 		REPLACE(REPLACE(JSON_EXTRACT(INFO1, '$.ACCEPT_ADMIN.IP'),'[',''),']','') AS INFO1
 		FROM TEST_CONFIG

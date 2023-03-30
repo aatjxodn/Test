@@ -5,9 +5,7 @@
 <mapper
 	namespace="egovframework.Test.main.service.dao.CommentDAO">
 
-	<select id="selectCommentList"
-		parameterType="egovframework.Test.main.service.TestCommentVO"
-		resultType="egovframework.Test.main.service.TestCommentVO">
+	<select id="selectCommentList" parameterType="TestCommentVO" resultType="TestCommentVO">
 		SELECT *, GROUP_NUM AS groupNum, GROUP_ORDER AS groupOrder
 		FROM AUTO_COMMENT
 		WHERE PAYMENT_ID = #{paymentId}
@@ -16,35 +14,30 @@
 		LIMIT #{limit}
 	</select>
 
-	<select id="totalSelectCommentList"
-		parameterType="egovframework.Test.main.service.TestCommentVO"
-		resultType="int">
+	<select id="totalSelectCommentList" parameterType="TestCommentVO" resultType="int">
 		SELECT COUNT(*)
 		FROM AUTO_COMMENT
 		WHERE PAYMENT_ID = #{paymentId}
 	</select>
 
-	<insert id="insertComment"
-		parameterType="egovframework.Test.main.service.TestCommentVO"
-		keyProperty="seq" useGeneratedKeys="true">
+	<insert id="insertComment" parameterType="TestCommentVO" keyProperty="seq" useGeneratedKeys="true">
 		INSERT INTO AUTO_COMMENT(COMMENT, PAYMENT_ID, DEPTH, REF_SEQ, ID, GROUP_NUM)
 		VALUES (#{comment}, #{paymentId}, 0, 0, #{id}, #{seq})
 	</insert>
 
-	<update id="updateComment"
-		parameterType="egovframework.Test.main.service.TestCommentVO">
+	<update id="updateComment" parameterType="TestCommentVO">
 		UPDATE AUTO_COMMENT
 		SET GROUP_NUM = #{seq}
 		WHERE SEQ = #{seq}
 	</update>
 
-	<insert id="insertCommentComment" parameterType="egovframework.Test.main.service.TestCommentVO" keyProperty="seq" useGeneratedKeys="true">
+	<insert id="insertCommentComment" parameterType="TestCommentVO" keyProperty="seq" useGeneratedKeys="true">
 		INSERT INTO AUTO_COMMENT(COMMENT, PAYMENT_ID, DEPTH, REF_SEQ, ID, GROUP_NUM, GROUP_ORDER)
 		VALUES (#{comment}, #{paymentId}, #{depth}, #{seq}, #{id}, #{groupNum}, #{groupOrder})
 	</insert>
 
 
-	<update	parameterType="egovframework.Test.main.service.TestCommentVO" id="updateCommentComment">
+	<update	parameterType="TestCommentVO" id="updateCommentComment">
 		UPDATE AUTO_COMMENT
 		SET GROUP_ORDER = GROUP_ORDER + 1
 		WHERE GROUP_NUM = #{groupNum}
@@ -52,7 +45,7 @@
 		AND GROUP_ORDER >= #{groupOrder}
 	</update>
 
-	<select id="MaxGroupOrder" parameterType="egovframework.Test.main.service.TestCommentVO" resultType="int">
+	<select id="MaxGroupOrder" parameterType="TestCommentVO" resultType="int">
 		SELECT IFNULL(MAX(GROUP_ORDER), 0)
 		FROM AUTO_COMMENT
 		WHERE PAYMENT_ID = #{paymentId}
@@ -60,12 +53,12 @@
 		AND REF_SEQ = #{seq}
 	</select>
 	
-	<delete id="deleteComment" parameterType="egovframework.Test.main.service.TestCommentVO">
+	<delete id="deleteComment" parameterType="TestCommentVO">
 		DELETE FROM AUTO_COMMENT
 		WHERE SEQ = #{seq}
 	</delete>
 	
-	<update id="goUpdateComment" parameterType="egovframework.Test.main.service.TestCommentVO">
+	<update id="goUpdateComment" parameterType="TestCommentVO">
 		UPDATE AUTO_COMMENT
 			SET COMMENT = #{comment}
 		WHERE SEQ = #{seq}

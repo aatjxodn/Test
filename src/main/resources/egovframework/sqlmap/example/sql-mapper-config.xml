@@ -4,5 +4,8 @@
 <configuration>
     <typeAliases>
 		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+		<typeAlias alias="TestCommentVO" type="egovframework.Test.main.service.TestCommentVO"/>
+		<typeAlias alias="TestMemberVO" type="egovframework.Test.main.service.TestMemberVO"/>
+		<typeAlias alias="TestBoardServiceVO" type="egovframework.Test.main.service.TestBoardServiceVO"/>
     </typeAliases>
 </configuration>

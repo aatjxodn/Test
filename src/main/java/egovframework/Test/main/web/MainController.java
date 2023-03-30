@@ -318,7 +318,7 @@ public class MainController {
  
         return "redirect:selectBoardList.do";
     }
-
+    
 	// 글수정
     @RequestMapping(value = "/updateTest.do")
     public String updateTest(@ModelAttribute("testVo") TestBoardServiceVO vo, HttpServletRequest request) throws Exception {
