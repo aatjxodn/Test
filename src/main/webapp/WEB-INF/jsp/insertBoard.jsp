@@ -6,6 +6,12 @@
 <meta charset="UTF-8">
 <title>글쓰기</title>
 </head>
+
+<style>
+	body {
+	background-color: #f8f8f8;
+}
+</style>
 <body>
 	<form id="form_test" action="insertBoard.do" method="post" encType="multipart/form-data">
 		<table class="table table-bordered">

@@ -6,6 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>로그인</title>
 <style>
+body {
+	background-color: #f8f8f8;
+}
+
 * {
 	margin: 0px;
 	padding: 0px;
@@ -22,11 +26,12 @@
 #container1 {
 	width: 350px;
 	margin: auto;
+	text-align: center;
 }
 
 #container1 table {
 	margin: auto;
-	margin-top: 300px;
+	margin-top: 250px;
 }
 </style>
 <script>
@@ -48,20 +53,19 @@
 			<form name="loginForm" action="login.do" method="post">
 				<table style="display: block; padding: 30px; border: 1px solid black; border-radius: 10px;">
 					<tr>
+						<th colspan="2" style="padding: 0px 0px 30px 0px;"><h1><i style="color: #1592FF;">Test</i></h1></th>
+					</tr>
+					<tr>
 						<th>ID</th>
-						<th><input type="text" name="id" placeholder="아이디"></th>
+						<th><input type="text" name="id" placeholder="아이디" autofocus></th>
 					</tr>
 					<tr>
 						<th>Password</th>
-						<th><input type="password" value="비밀번호" name="password"
-							id="password"></th>
+						<th><input type="password" value="비밀번호" name="password" id="password"></th>
 					</tr>
 					<tr>
-						<th style="padding: 10px;"><input type="button" value="회원가입"
-							onclick="GosignUp(this.form)" id="signUp"
-							style="padding: 5px 10px;"></th>
-						<th style="padding: 10px;"><input type="submit" value="로그인"
-							style="padding: 5px 40px;"></th>
+						<th style="padding: 10px;"><input type="button" value="회원가입" onclick="GosignUp(this.form)" id="signUp" style="padding: 5px 10px;"></th>
+						<th style="padding: 10px;"><input type="submit" value="로그인" style="padding: 5px 40px;"></th>
 					</tr>
 				</table>
 			</form>

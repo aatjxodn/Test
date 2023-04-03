@@ -12,6 +12,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <style>
+body {
+	background-color: #f8f8f8;
+}
+
 	* {
 		margin: 0px;
 		padding: 0px;

@@ -13,6 +13,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <style>
+body {
+	background-color: #f8f8f8;
+}
+
 	* {
 		margin: 0px;
 		padding: 0px;
@@ -281,7 +285,6 @@ function fn_insertBoard() {
 					</c:if>
 				</li>
 				<li style="display: flex; float: right;"><input type="button" value="글쓰기" onclick="fn_insertBoard()" style="padding: 5px 20px;"></li>
-				<li style="display: flex; float: right;"><input type="button" value="gg" onclick="javascript:location.href='sample.do'" style="padding: 5px 20px;"></li>
 			</ul>
 		</div>
 	</div>

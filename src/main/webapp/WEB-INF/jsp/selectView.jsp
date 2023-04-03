@@ -13,6 +13,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <style>
+
+body {
+	background-color: #f8f8f8;
+}
 	* {
 		margin: 0px;
 		padding: 0px;
@@ -222,14 +226,14 @@ function fn_insertCommentButton(seq, depth, groupOrder, groupNum) {
 	$("#depth").val(depth+1);
 	$("#order").val(groupOrder+1);
 	
-	
 	// 버튼 비활성화
-	const target1 = document.getElementById('insertCommentButton');
-	const target2 = document.getElementById('updateCommentButton');
-	const target3 = document.getElementById('deleteCommentButton');
-	target1.disabled = true;
-	target2.disabled = true;
-	target3.disabled = true;
+//	const target1 = document.getElementById('insertCommentButton');
+//	const target2 = document.getElementById('updateCommentButton');
+//	const target3 = document.getElementById('deleteCommentButton');
+//	target1.disabled = true;
+//	target2.disabled = true;
+//	target3.disabled = true;
+
 }
 
 // 답변 수정 버튼 누를 시 생성
@@ -245,18 +249,19 @@ function fn_updateCommentButton(seq, depth, groupOrder, groupNum) {
 	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>";
 	testHtml += "<input type='hidden' value='${user.id }' name='id'>";
 	testHtml += "</form>";
-	
+
+
 	$("#ul2_"+seq).append(testHtml)
 	$("#depth").val(depth+1);
 	$("#order").val(groupOrder+1);
 	
 	// 버튼 비활성화
-	const target1 = document.getElementById('insertCommentButton');
-	const target2 = document.getElementById('updateCommentButton');
-	const target3 = document.getElementById('deleteCommentButton');
-	target1.disabled = true;
-	target2.disabled = true;
-	target3.disabled = true;
+//	const target1 = document.getElementById('insertCommentButton');
+//	const target2 = document.getElementById('updateCommentButton');
+//	const target3 = document.getElementById('deleteCommentButton');
+//	target1.disabled = true;
+//	target2.disabled = true;
+//	target3.disabled = true;
 }
 
 // 답글 및 답변 수정
@@ -324,15 +329,19 @@ function fn_deleteCommentButton(seq) {
 
 //답글 취소 기능
 function fn_cancelBut() {
+	
+//	var testHtml = "";
+	
+//	$("#insertCommentCommentArea").html(testHtml);
 	$("#insertCommentCommentArea").css("display","none");
 	
 	// 버튼 활성화
-	const target1 = document.getElementById('insertCommentButton');
-	const target2 = document.getElementById('updateCommentButton');
-	const target3 = document.getElementById('deleteCommentButton');
-	target1.disabled = false;
-	target2.disabled = false;
-	target3.disabled = false;
+//	const target1 = document.getElementById('insertCommentButton');
+//	const target2 = document.getElementById('updateCommentButton');
+//	const target3 = document.getElementById('deleteCommentButton');
+//	target1.disabled = false;
+//	target2.disabled = false;
+//	target3.disabled = false;
 
 	
 }
@@ -344,14 +353,15 @@ function fn_cancelBut2() {
 	$("#ul2_"+seq).append(testHtml)
 	$("#depth").val(depth+1);
 	$("#order").val(groupOrder+1);
+	
 
 	// 버튼 활성화
-	const target1 = document.getElementById('insertCommentButton');
-	const target2 = document.getElementById('updateCommentButton');
-	const target3 = document.getElementById('deleteCommentButton');
-	target1.disabled = false;
-	target2.disabled = false;
-	target3.disabled = false;
+//	const target1 = document.getElementById('insertCommentButton');
+//	const target2 = document.getElementById('updateCommentButton');
+//	const target3 = document.getElementById('deleteCommentButton');
+//	target1.disabled = false;
+//	target2.disabled = false;
+//	target3.disabled = false;
 }
 
 
@@ -371,7 +381,7 @@ function fn_insertCommentComment() {
         	limit += 1;
 
         	$("#limit").val(limit);
-            
+        	
             fn_selectCommentList();
         },
         error: function(error){
@@ -416,7 +426,7 @@ function fn_likeView() {
 	        	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>"
 	        	testHtml += "<input type='hidden' value='${user.id }' name='id'>"
 	        	testHtml += "</form>"
-	        	
+				
 	        	$("#likeArea").html(testHtml);
 	        	$("#boardViewLike").html(data);
 	        	
@@ -451,7 +461,7 @@ function fn_cancleLikeView() {
 	        	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>"
 	        	testHtml += "<input type='hidden' valu1231e='${user.id }' name='id'>"
 	        	testHtml += "</form>"
-	        	
+
 	        	$("#cancleLikeArea").html(testHtml);
 	        	$("#boardViewLike").html(data);
 	        	
@@ -495,7 +505,7 @@ function fn_cancleLikeView() {
 			<table>
 				<tr>
 					<th style="width: 15%;">${user.id }</th>
-					<td style="width: 65%;"><input type="text" id="commentArea" value="" name="comment" placeholder="댓글을 입력하세요" style="width: 100%; border: none; border-left: 1px solid #ccc; padding: 10px; cursor: pointer;"></td>
+					<td style="width: 65%;"><input type="text" id="commentArea" value="" name="comment" placeholder="댓글을 입력하세요" style="width: 100%; border: none; border-left: 1px solid #ccc; padding: 10px;"></td>
 					<td style="width: 20%;"><input type="button" value="작성" id="insertClick" style="width: 100%; padding: 10px; cursor: pointer;"></td>
 					<td style="display: none;"><input type="hidden" value="${selectView.paymentId }" name="paymentId"></td>
 					<td style="display: none;"><input type="hidden" value="${user.id }" name="id"></td>

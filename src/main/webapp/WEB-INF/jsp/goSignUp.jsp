@@ -14,6 +14,10 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <style>	
+body {
+	background-color: #f8f8f8;
+}
+
 * {
 	text-decoration: none;
 	list-style: none;
