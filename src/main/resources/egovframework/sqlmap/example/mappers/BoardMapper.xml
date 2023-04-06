@@ -7,7 +7,9 @@
 
 	<select
 		resultType="TestBoardServiceVO" parameterType="map" id="selectBoardList">
-		SELECT P.*, PAYMENT_ID as paymentId,
+		SELECT 
+		P.*, 
+		PAYMENT_ID as paymentId,
 		P.customer_id as customerId,
 		P.staff_id as staffId,
 		P.rental_id as

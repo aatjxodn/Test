@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-
 import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.Test.main.service.TestBoardServiceVO;
@@ -30,93 +28,90 @@ import egovframework.common.util.alertUtils;
 
 @RestController
 public class MainAjaxController {
-	
-	@Resource(name="memberService")
+
+	@Resource(name = "memberService")
 	private MemberImpl memberService;
-	
-	@Resource(name="boardService")
+
+	@Resource(name = "boardService")
 	private BoardServiceImpl boardService;
-	
-	@Resource(name="commentService")
+
+	@Resource(name = "commentService")
 	private CommentImpl commentService;
-	
-	
-	@RequestMapping(value="/selectCommentList.do",produces = "application/json; charset=utf8", method=RequestMethod.POST)
+
+	@RequestMapping(value = "/selectCommentList.do", produces = "application/json; charset=utf8", method = RequestMethod.POST)
 	@ResponseBody
 	public List<TestCommentVO> selectCommentList(TestCommentVO vo, Model model, HttpSession session) {
-		
+
 		List<TestCommentVO> selectCommentList = commentService.selectCommentList(vo);
-		
+
 		System.out.println("selectCommentList : " + selectCommentList);
-		
+
 		return selectCommentList;
 	}
 
-	@RequestMapping(value="/insertComment.do",produces = "application/json; charset=utf8", method=RequestMethod.POST)
+	@RequestMapping(value = "/insertComment.do", produces = "application/json; charset=utf8", method = RequestMethod.POST)
 	@ResponseBody
-	public TestCommentVO insertComment(TestCommentVO vo, Model model ,HttpSession session) {
-		
-		if(commentService.insertComment(vo) > 0 ) {
-			if (commentService.updateComment(vo) > 0){
-				
+	public TestCommentVO insertComment(TestCommentVO vo, Model model, HttpSession session) {
+
+		if (commentService.insertComment(vo) > 0) {
+			if (commentService.updateComment(vo) > 0) {
+
 			}
 		}
 
 		return vo;
 	}
-	
-	@RequestMapping(value="/insertCommentComment.do",produces = "application/json; charset=utf8", method=RequestMethod.POST)
+
+	@RequestMapping(value = "/insertCommentComment.do", produces = "application/json; charset=utf8", method = RequestMethod.POST)
 	@ResponseBody
 	public TestCommentVO insertCommentComment(TestCommentVO vo, Model model, HttpSession session) {
-		
+
 		int maxGroupOrder = commentService.MaxGroupOrder(vo);
 		if (maxGroupOrder != 0) {
 			vo.setGroupOrder(maxGroupOrder + 1);
 			commentService.insertCommentComment(vo);
-			
+
 		} else {
 			commentService.insertCommentComment(vo);
 		}
-		
+
 		commentService.updateCommentComment(vo);
-	
+
 		return vo;
 	}
-	
+
 	@RequestMapping("/idcheck.do")
-    @ResponseBody
-    public int idcheck(@RequestBody String id) {
-        
-        int count = 0;
-        
-        count = memberService.idcheck(id);
-        
-        System.out.println("count :" + count);
-        return count;
-    }
-	
-	
+	@ResponseBody
+	public int idcheck(@RequestBody String id) {
+
+		int count = 0;
+
+		count = memberService.idcheck(id);
+
+		System.out.println("count :" + count);
+		return count;
+	}
+
 	@RequestMapping("/deleteComment.do")
-    @ResponseBody
-    public int deleteComment(TestCommentVO vo, @RequestParam("deleteSeq") int deleteSeq) {
-		
+	@ResponseBody
+	public int deleteComment(TestCommentVO vo, @RequestParam("deleteSeq") int deleteSeq) {
+
 		vo.setSeq(deleteSeq);
-		
+
 		int deleteCom = commentService.deleteComment(vo);
-		
+
 		return deleteCom;
 	}
-	
+
 	@RequestMapping("/goUpdateComment.do")
-    @ResponseBody
-    public int goUpdateComment(TestCommentVO vo) {
-		
+	@ResponseBody
+	public int goUpdateComment(TestCommentVO vo) {
+
 		int deleteCom = commentService.goUpdateComment(vo);
-		
+
 		return deleteCom;
 	}
-	
-    
+
 //	@RequestMapping(value="/search.do")
 //	@ResponseBody
 //	public List<TestBoardServiceVO> search(TestBoardServiceVO vo, 
@@ -149,57 +144,72 @@ public class MainAjaxController {
 //		
 //		return null;
 //	}
-	
-	@RequestMapping(value="/likeView.do")
+
+	@RequestMapping(value = "/likeView.do")
 	@ResponseBody
 	public int updateLikeCnt(TestBoardServiceVO vo, HttpServletResponse response, Model model) throws IOException {
-		
+
 		// 테이블에 좋아료를 누른 아이디와 paymentId가 있는지 체크
 		int checkLike = boardService.checkLike(vo);
 		// 게시글에 like 총개수
 		TestBoardServiceVO likeTot = boardService.likeCntTot(vo);
 		likeTot.getLikeCnt();
-		
+
 		// checkLike가 없다면
 		if (checkLike == 0) {
 			// row를 하나 생성
 			boardService.insertLikeBoard(vo);
 			// 게시글 좋아요 개수 추가
 			int updateLikeCnt = boardService.updateLikeCnt(vo);
-			
+
 			model.addAttribute("checkLike", checkLike);
-			
+
 			return likeTot.getLikeCnt() + updateLikeCnt;
+		} else if (checkLike == 1) {
+			boardService.deleteLikeBoard(vo);
+			// 게시글 좋아요 개수 하락
+			int cancleLikeCnt = boardService.cancleLikeCnt(vo);
+
+			model.addAttribute("checkLike", checkLike);
+
+			return likeTot.getLikeCnt() - cancleLikeCnt;
 		}
-		
+
 		return likeTot.getLikeCnt();
 	}
-	
-	@RequestMapping(value="/cancleLikeView.do")
+
+	@RequestMapping(value = "/cancleLikeView.do")
 	@ResponseBody
 	public int cancleLikeView(TestBoardServiceVO vo, HttpServletResponse response, Model model) throws IOException {
-		
+
 		// 테이블에 좋아료를 누른 아이디와 paymentId가 있는지 체크
 		int checkLike = boardService.checkLike(vo);
 		// 게시글에 like 총개수
 		TestBoardServiceVO likeTot = boardService.likeCntTot(vo);
 		likeTot.getLikeCnt();
-		
+
 		// checkLike가 있다면
 		if (checkLike == 1) {
 			// 있는 row를 삭제
 			boardService.deleteLikeBoard(vo);
 			// 게시글 좋아요 개수 하락
 			int cancleLikeCnt = boardService.cancleLikeCnt(vo);
-			
+
 			model.addAttribute("checkLike", checkLike);
-			
+
 			return likeTot.getLikeCnt() - cancleLikeCnt;
+		} else if (checkLike == 0) {
+			// row를 하나 생성
+			boardService.insertLikeBoard(vo);
+			// 게시글 좋아요 개수 추가
+			int updateLikeCnt = boardService.updateLikeCnt(vo);
+
+			model.addAttribute("checkLike", checkLike);
+
+			return likeTot.getLikeCnt() + updateLikeCnt;
 		}
+		
 		return likeTot.getLikeCnt();
 	}
-	
-	
-	
 
 }

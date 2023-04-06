@@ -130,6 +130,22 @@ function fn_insertBoard() {
 	}
 }
 
+function fn_logout() {
+	
+	var result = confirm("로그아웃 하시겠습니까?");
+	
+	if (result == true) {
+		
+		alert("로그아웃 성공");
+		location.href = "logout.do";
+		
+	} else {
+		
+		return false;
+	
+	}
+}
+
 
 
 /* function fn_searchClick() {
@@ -204,7 +220,7 @@ function fn_insertBoard() {
 			</form>
 		</div>
 		<div style="margin-bottom: 10px; float: right;">
-			<input type="button" value="로그아웃" onclick="javascript:location.href='logout.do'" style="padding: 5px 20px;">
+			<input type="button" value="로그아웃" onclick="fn_logout();" style="padding: 5px 20px;">
 			<input type="hidden" value="${user.id }" name="id">
 			<input type="hidden" value="${user.password }" name="password">
 		</div>
