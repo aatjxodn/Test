@@ -5,7 +5,7 @@
 
 **개발 툴** : 전자정부프레임워크 3.10, MYSQL
 
-**사용 언어** : Java(JDK 1.8), SQL, JSP & Servlet, HTML/CSS, JavaScript
+**사용 언어** : Java(JDK 1.8), SQL, JSP & Servlet, HTML/CSS, JavaScript, Jquery
 
 # 주제
 **2023 기능구현 토이 프로젝트**
