@@ -419,20 +419,31 @@ function fn_likeView() {
 	        success: function(data){
 	        	console.log(data);
 	        	
-	        	var testHtml = "";
+//	        	var testHtml = "";
+//	        	testHtml += "<form id='cancleLikeView' method='post'>"
+//	        	testHtml += "<span><input type='button' value='좋아요 취소 "+ data +"' name='likeCnt' onclick='fn_cancleLikeView();' style='padding: 10px 20px; background-color: red; color: white; font-weight: bold;'></span>"
+//	        	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>"
+//	        	testHtml += "<input type='hidden' value='${user.id }' name='id'>"
+//	        	testHtml += "</form>"
+//	        	$("#like_Cnt").html(data);
 	        	
-	        	testHtml += "<form id='cancleLikeView' method='post'>"
-	        	testHtml += "<span><input type='button' value='좋아요 취소 "+ data +"' name='likeCnt' onclick='fn_cancleLikeView();' style='padding: 10px 20px; background-color: red; color: white; font-weight: bold;'></span>"
-	        	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>"
-	        	testHtml += "<input type='hidden' value='${user.id }' name='id'>"
-	        	testHtml += "</form>"
-				
-	        	$("#like_Cnt").html(data);
-	        	$("#boardViewLike").html(data);
+	        	var like = document.getElementById("like_Cnt").value;
+	        	const arr = like.split(" ");
+	        	var like_Num = arr[1];
 	        	
-	        	var like_cnt = document.getElementById("like_cnt").value;
-	        	alert(like_cnt);
+	        	if (data > like_Num) {
+	        		$("#like_Cnt").val("좋아요취소 " + data);
+	        		$("#boardViewLike").html(data);
+	        		$("#like_Cnt").css("background-color", "red");
+	        		$("#like_Cnt").css("color", "white");
+	        	}
 	        	
+	        	if (data < like_Num) {
+	        		$("#like_Cnt").val("좋아요 " + data);
+	        		$("#boardViewLike").html(data);
+	        		$("#like_Cnt").css("background-color", "white");
+	        		$("#like_Cnt").css("color", "black");
+	        	}
 	            
 	        },
 	        error: function(error){
@@ -457,23 +468,33 @@ function fn_cancleLikeView() {
 	        success: function(data){
 	        	console.log(data);
 				
-	        	var testHtml = "";
-	        	
-	        	alert(data);
-	        	testHtml += "<form id='likeView' method='post'>"
-	        	testHtml += "<span><input type='button' value='좋아요 " + data +"' name='likeCnt' onclick='fn_likeView();' style='padding: 10px 20px; background-color: white; font-weight: bold;'></span>"
-	        	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>"
-	        	testHtml += "<input type='hidden' valu1231e='${user.id }' name='id'>"
-	        	testHtml += "</form>"
-
-	        	$("#like_Cnt").html(data);
-	        	$("#boardViewLike").html(data);
-	        	
-	        	var like_cnt = document.getElementById("like_cnt").value;
-	        	alert(like_cnt);
-	        	
-//	        	alert("좋아요 취소 완료!");
+//	        	var testHtml = "";
+//	        	testHtml += "<form id='likeView' method='post'>"
+//	        	testHtml += "<span><input type='button' value='좋아요 " + data +"' name='likeCnt' onclick='fn_likeView();' style='padding: 10px 20px; background-color: white; font-weight: bold;'></span>"
+//	        	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>"
+//	        	testHtml += "<input type='hidden' valu1231e='${user.id }' name='id'>"
+//	        	testHtml += "</form>"
 //	        	location.reload();
+
+				var like = document.getElementById("like_Cnt").value;
+	        	const arr = like.split(" ");
+	        	var like_Num = arr[1];
+	        	
+	        	if (data > like_Num) {
+	        		$("#like_Cnt").val("좋아요취소 " + data);
+	        		$("#boardViewLike").html(data);
+	        		$("#like_Cnt").css("background-color", "red");
+	        		$("#like_Cnt").css("color", "white");
+	        	}
+	        	
+	        	if (data < like_Num) {
+	        		$("#like_Cnt").val("좋아요 " + data);
+	        		$("#boardViewLike").html(data);
+	        		$("#like_Cnt").css("background-color", "white");
+	        		$("#like_Cnt").css("color", "black");
+	        	}
+
+	        
 	        },
 	        error: function(error){
 	        	alert("실패 : " + error);  
@@ -523,7 +544,7 @@ function fn_cancleLikeView() {
 		<c:if test="${checkLike == 1 }">
 			<div id="cancleLikeArea" style="display: block; margin-top: 50px; margin-left: 480px;">
 				<form id="cancleLikeView" method="post">
-					<span><input type="button" value="좋아요 취소 ${likeCntTot.likeCnt }" name="likeCnt" id="like_Cnt" onclick="fn_cancleLikeView();" style="padding: 10px 20px; background-color: red; color: white; font-weight: bold; cursor: pointer;"></span>
+					<span><input type="button" value="좋아요취소 ${likeCntTot.likeCnt }" name="likeCnt" id="like_Cnt" onclick="fn_cancleLikeView();" style="padding: 10px 20px; background-color: red; color: white; font-weight: bold; cursor: pointer;"></span>
 					<input type="hidden" value="${selectView.paymentId }" name="paymentId">
 					<input type="hidden" value="${user.id }" name="id">
 				</form>
