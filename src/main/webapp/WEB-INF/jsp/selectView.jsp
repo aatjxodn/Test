@@ -153,6 +153,7 @@ $(document).ready(function(){
 // 댓글 목록 조회 기능
 function fn_selectCommentList() {
 	
+	var session_id = "${user.id }";
 	$("#insertCommentArea").css("display","none");
 	
     $.ajax({
@@ -170,7 +171,7 @@ function fn_selectCommentList() {
             for (var selectCommentList of data) {
             	
 				let groupNum = selectCommentList.seq;
-	
+				
              	var margin = 0;
              	var width = 600;
              	for(var i=0; i < selectCommentList.depth; i++) {
@@ -182,10 +183,10 @@ function fn_selectCommentList() {
              	display += "<li style='font-weight: bold; padding: 5px 0px;'>" + selectCommentList.id + "</li>";
              	display += "<li style='padding: 5px 0px;'>" + selectCommentList.comment + "</li>";
              	display += "<li style='padding: 5px 0px;'>";	                
-             	display += "<input type='button' value='답글 작성' id='insertCommentButton' onclick='fn_insertCommentButton("+selectCommentList.seq+","+selectCommentList.depth+","+selectCommentList.groupOrder+","+ selectCommentList.groupNum +")'>";		                   
-             	if (selectCommentList.id) {
-             		display += "<input type='button' value='수정' id='updateCommentButton' onclick='fn_updateCommentButton("+selectCommentList.seq +")'>";	         		
-             		display += "<input type='button' value='삭제' id='deleteCommentButton' onclick='fn_deleteCommentButton("+selectCommentList.seq +")'>";	         		
+             	display += "<input type='button' value='답글 작성' id='insertCommentButton_"+selectCommentList.seq+"' onclick='fn_insertCommentButton("+selectCommentList.seq+","+selectCommentList.depth+","+selectCommentList.groupOrder+","+ selectCommentList.groupNum +")'>";		                   
+             	if (selectCommentList.id == session_id) {
+             		display += "<input type='button' value='수정' id='updateCommentButton_"+selectCommentList.seq+"' onclick='fn_updateCommentButton("+selectCommentList.seq+","+selectCommentList.depth+","+selectCommentList.groupOrder+","+ selectCommentList.groupNum +")'>";	     		
+             		display += "<input type='button' value='삭제' id='deleteCommentButton_"+selectCommentList.seq+"' onclick='fn_deleteCommentButton("+selectCommentList.seq +")'>";	         		
              	}
              	display += "</li>";
              	display += "</ul>";
@@ -208,12 +209,19 @@ function fn_selectCommentList() {
 // 답글 작성 버튼 누를 시 생성 
 function fn_insertCommentButton(seq, depth, groupOrder, groupNum) { 
 	
+	var margin = 0;
+ 	var width = 600;
+ 	for(var i=0; i < depth; i++) {
+ 		margin += 20;
+ 		width += -20;
+ 	}
+		
 	var testHtml = "";
 
-	testHtml += "<form id='insertCommentCommentArea' method='post' style='display: block; margin-top: 15px;'>";
+	testHtml += "<form id='insertCommentCommentArea' method='post' style='display: block; margin-top: 15px; margin-left:"+margin+"px;'>";
 	testHtml += "<input type='text' value='' name='comment' style='padding: 15px; width: 300px; text-align: left;' placeholder='답글을 입력하세요.'>";
-	testHtml += "<input type='button' value='취소' onclick='fn_cancelBut()' style='padding: 15px;'>";
-	testHtml += "<input type='button' value='답글' onclick='fn_insertCommentComment()' style='padding: 15px;'>";
+	testHtml += "<input type='button' value='취소' onclick='fn_cancelBut(" +seq+ ");' style='padding: 15px;'>";
+	testHtml += "<input type='button' value='답글' onclick='fn_insertCommentComment();' style='padding: 15px;'>";
 	testHtml += "<input type='hidden' value='" + groupNum + "' id='groupNum' name='groupNum'>";
 	testHtml += "<input type='hidden' value='" + depth + "' id='depth' name='depth'>";
 	testHtml += "<input type='hidden' value='" + groupOrder + "' id='order' name='groupOrder'>";
@@ -226,24 +234,30 @@ function fn_insertCommentButton(seq, depth, groupOrder, groupNum) {
 	$("#depth").val(depth+1);
 	$("#order").val(groupOrder+1);
 	
-	// 버튼 비활성화
-//	const target1 = document.getElementById('insertCommentButton');
-//	const target2 = document.getElementById('updateCommentButton');
-//	const target3 = document.getElementById('deleteCommentButton');
-//	target1.disabled = true;
-//	target2.disabled = true;
-//	target3.disabled = true;
+	const target1 = document.getElementById('insertCommentButton_'+seq);
+	const target2 = document.getElementById('updateCommentButton_'+seq);
+	const target3 = document.getElementById('deleteCommentButton_'+seq);
+	target1.disabled = true;
+	target2.disabled = true;
+	target3.disabled = true;
 
 }
 
 // 답변 수정 버튼 누를 시 생성
 function fn_updateCommentButton(seq, depth, groupOrder, groupNum) {
 	
+	var margin = 0;
+ 	var width = 600;
+ 	for(var i=0; i < depth; i++) {
+ 		margin += 20;
+ 		width += -20;
+ 	}
+ 	
 	var testHtml = "";
 
-	testHtml += "<form id='updateCommentCommentArea' method='post' style='display: block; margin-top: 15px;'>";
+	testHtml += "<form id='updateCommentCommentArea' method='post' style='display: block; margin-top: 15px; margin-left:"+margin+"px;'>";
 	testHtml += "<input type='text' value='' name='comment' style='padding: 15px; width: 300px; text-align: left;' placeholder='답글을 수정하세요.'>";
-	testHtml += "<input type='button' value='취소' onclick='fn_cancelBut2()' style='padding: 15px;'>";
+	testHtml += "<input type='button' value='취소' onclick='fn_cancelBut2("+seq+")' style='padding: 15px;'>";
 	testHtml += "<input type='button' value='수정' onclick='fn_updateCommentComment()' style='padding: 15px;'>";
 	testHtml += "<input type='hidden' value='" + seq + "' id='seq' name='seq'>";
 	testHtml += "<input type='hidden' value='${selectView.paymentId }' name='paymentId'>";
@@ -255,13 +269,12 @@ function fn_updateCommentButton(seq, depth, groupOrder, groupNum) {
 	$("#depth").val(depth+1);
 	$("#order").val(groupOrder+1);
 	
-	// 버튼 비활성화
-//	const target1 = document.getElementById('insertCommentButton');
-//	const target2 = document.getElementById('updateCommentButton');
-//	const target3 = document.getElementById('deleteCommentButton');
-//	target1.disabled = true;
-//	target2.disabled = true;
-//	target3.disabled = true;
+	const target1 = document.getElementById('insertCommentButton_'+seq);
+	const target2 = document.getElementById('updateCommentButton_'+seq);
+	const target3 = document.getElementById('deleteCommentButton_'+seq);
+	target1.disabled = true;
+	target2.disabled = true;
+	target3.disabled = true;
 }
 
 // 답글 및 답변 수정
@@ -328,40 +341,33 @@ function fn_deleteCommentButton(seq) {
 
 
 //답글 취소 기능
-function fn_cancelBut() {
+function fn_cancelBut(seq) {
 	
-//	var testHtml = "";
+	var testHtml = "";
+	$("#ul2_"+seq).html(testHtml);
 	
-//	$("#insertCommentCommentArea").html(testHtml);
-	$("#insertCommentCommentArea").css("display","none");
-	
-	// 버튼 활성화
-//	const target1 = document.getElementById('insertCommentButton');
-//	const target2 = document.getElementById('updateCommentButton');
-//	const target3 = document.getElementById('deleteCommentButton');
-//	target1.disabled = false;
-//	target2.disabled = false;
-//	target3.disabled = false;
-
+	const target1 = document.getElementById('insertCommentButton_'+seq);
+	const target2 = document.getElementById('updateCommentButton_'+seq);
+	const target3 = document.getElementById('deleteCommentButton_'+seq);
+	target1.disabled = false;
+	target2.disabled = false;
+	target3.disabled = false;
 	
 }
 
 //답글 취소 기능2
-function fn_cancelBut2() {
-	$("#updateCommentCommentArea").css("display","none");
+function fn_cancelBut2(seq) {
 	
-	$("#ul2_"+seq).append(testHtml)
-	$("#depth").val(depth+1);
-	$("#order").val(groupOrder+1);
+	var testHtml = "";
+	$("#ul2_"+seq).html(testHtml);
 	
-
-	// 버튼 활성화
-//	const target1 = document.getElementById('insertCommentButton');
-//	const target2 = document.getElementById('updateCommentButton');
-//	const target3 = document.getElementById('deleteCommentButton');
-//	target1.disabled = false;
-//	target2.disabled = false;
-//	target3.disabled = false;
+	const target1 = document.getElementById('insertCommentButton_'+seq);
+	const target2 = document.getElementById('updateCommentButton_'+seq);
+	const target3 = document.getElementById('deleteCommentButton_'+seq);
+	target1.disabled = false;
+	target2.disabled = false;
+	target3.disabled = false;
+	
 }
 
 
