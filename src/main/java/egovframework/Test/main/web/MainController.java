@@ -165,9 +165,7 @@ public class MainController {
 	}
 
 	@RequestMapping("/selectView.do")
-	public String selectView(
-			@RequestParam(value = "paymentId") String paymentId,
-			TestBoardServiceVO vo, TestCommentVO vo2, Model model,
+	public String selectView(@RequestParam(value = "paymentId") String paymentId, TestBoardServiceVO vo, TestCommentVO vo2, Model model,
 			HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 		
 		// 유저 가져오기
@@ -182,8 +180,6 @@ public class MainController {
 		Cookie viewCookie = null;
 		Cookie[] cookies = request.getCookies();
 		
-		System.out.println("cookie : " + cookies);
-
 		if (cookies != null) {
 			for (int i = 0; i < cookies.length; i++) {
 				// System.out.println("쿠키 이름 : "+cookies[i].getName());
@@ -205,12 +201,10 @@ public class MainController {
 					model.addAttribute("totalSelectCommentList", totalSelectCommentList);
 				}
 			}
-		} else {
-			System.out.println("cookies 확인 로직 : 쿠키가 없습니다.");
 		}
 		// 만들어진 쿠키가 없음을 확인
 		if (viewCookie == null) {
-			System.out.println("viewCookie 확인 로직 : 쿠키 없음");
+			
 			try {
 				// 이 페이지에 왔다는 증거용(?) 쿠키 생성
 				Cookie newCookie = new Cookie(paymentId, userId);
@@ -233,14 +227,11 @@ public class MainController {
 				model.addAttribute("totalSelectCommentList", totalSelectCommentList);
 
 			} catch (Exception e) {
-				System.out.println("쿠키 넣을때 오류  : " + e.getMessage());
 				e.getStackTrace();
 			}
 			// 만들어진 쿠키가 있으면 증가로직 진행하지 않음
 		} else {
-			System.out.println("viewCookie 확인 로직 : 쿠키 있음");
 			String value = viewCookie.getValue();
-			System.out.println("viewCookie 확인 로직 : 쿠키 value : " + value);
 		}
 
 		return "/selectView";
