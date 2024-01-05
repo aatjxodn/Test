@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-30초마다 설정 파일의 변경을 확인한다. 파일이 변경되면 다시 로딩한다
+<!-- 30초마다 설정 파일의 변경을 확인한다. 파일이 변경되면 다시 로딩한다 -->
 <configuration scan="true" scanPeriod="30 seconds">
  
-    외부 설정파일을 사용할 수 있다.
+    <!-- 외부 설정파일을 사용할 수 있다. -->
     <property resource="resource.properties"/>
  
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
@@ -12,24 +11,36 @@
         </encoder>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>../logs/JJCALL.log</file>
+        <file>../logs/Test.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            파일이 하루에 한개씩 생성된다
-            <fileNamePattern>../logs/JJCALL.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 파일이 하루에 한개씩 생성된다 -->
+            <fileNamePattern>../logs/Test.%d{yyyy-MM-dd}.log</fileNamePattern>
  
-            maxHIstory 설정은 위 부분에 롤링 정책에 따라 적용되 된다고 보면된다. 위 설정데로 라면 30일이 지난 파일은 삭제가 된다.
-            <maxHistory>60</maxHistory>
+            <!-- maxHIstory 설정은 위 부분에 롤링 정책에 따라 적용되 된다고 보면된다. 위 설정데로 라면 30일이 지난 파일은 삭제가 된다.-->
+            <maxHistory>365</maxHistory>
         </rollingPolicy>
  
         <encoder>
             <pattern> %d{HH:mm:ss} %-5level [%logger{50}]  %msg%n</pattern>
         </encoder>
     </appender>
- 
+ 	
+ 	
+ 	<logger name="egovframework" level="debug">
+    	<appender-ref ref="console" />
+    	<appender-ref ref="FILE" />
+    </logger>
+    
+    <logger name="wisevcs" level="debug">
+    	<appender-ref ref="console" />
+    	<appender-ref ref="FILE" />
+    </logger>
+    
     <logger name="org.springframework" level="debug">
     	<appender-ref ref="console" />
     	<appender-ref ref="FILE" />
     </logger>
+    
     <logger name="egovframework" level="debug">
     	<appender-ref ref="console" />
     	<appender-ref ref="FILE" />
@@ -42,32 +53,8 @@
     	<appender-ref ref="console" />
     	<appender-ref ref="FILE" />
     </logger>
+    
+    
    
+<typeAliases></typeAliases>
 </configuration>
- -->
-
-<Configuration>
-    <Appenders>
-        <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d %5p [%c] %m%n" />
-        </Console>
-    </Appenders>
-    <Loggers>
-        <Logger name="java.sql" level="INFO" additivity="false">
-            <AppenderRef ref="console" />
-        </Logger>
-        <Logger name="egovframework" level="DEBUG" additivity="false">
-            <AppenderRef ref="console" />
-        </Logger>
-          <!-- log SQL with timing information, post execution -->
-        <Logger name="jdbc.sqltiming" level="INFO" additivity="false">
-            <AppenderRef ref="console" />
-        </Logger>
-        <Logger name="org.springframework" level="INFO" additivity="false">
-            <AppenderRef ref="console" />
-        </Logger>
-        <Root level="INFO">
-            <AppenderRef ref="console" />
-        </Root>
-    </Loggers>
-</Configuration>

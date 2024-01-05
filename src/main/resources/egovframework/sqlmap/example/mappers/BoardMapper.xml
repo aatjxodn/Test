@@ -25,10 +25,8 @@
 		(ORDER BY payment_id DESC) AS
 		R_NUM, P.* FROM
 		payment P) P
-		LEFT JOIN
-		customer C ON P.customer_id = C.customer_id
-		LEFT JOIN staff S ON
-		P.staff_id = S.staff_id
+		LEFT JOIN customer C ON P.customer_id = C.customer_id
+		LEFT JOIN staff S ON P.staff_id = S.staff_id
 		LEFT JOIN rental R ON P.rental_id = R.rental_id
 		WHERE R_NUM BETWEEN #{begin} AND #{end}
 	</select>

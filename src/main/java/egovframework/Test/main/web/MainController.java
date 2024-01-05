@@ -47,7 +47,6 @@ public class MainController {
 	private CommentImpl commentService;
 
 	
-	
 	@RequestMapping("/main.do")
 	public String mainPage() {
 		return "login";
@@ -62,7 +61,6 @@ public class MainController {
 	public String sample() {
 		return "sample";
 	}
-
 	
 
 	// 함수 집어 넣어서 암호화해서 회원가입시키기
@@ -72,10 +70,11 @@ public class MainController {
 		String txt = vo.getPassword();
 		vo.setPassword(egovframework.common.util.StringUtils.testSHA256(txt));
 
-		System.out.println(txt);
 		System.out.println(egovframework.common.util.StringUtils.testSHA256(txt));
 
 		memberService.signUp(vo);
+		
+		LOGGER.info("회원가입 성공 성공");
 
 		return "/login";
 	}
@@ -90,18 +89,17 @@ public class MainController {
 		
 		if (user != null) {
 
-			System.out.println(">> 로그인 성공");
 			session.setAttribute("user", user);
 			
-			System.out.println("유저  : " + user);
+			LOGGER.info("로그인 성공 : " + user);
 			
 			return "forward:selectBoardList.do";
 
 		} else {
-			System.out.println(">> 로그인 실패");
-			System.out.println("유저  : " + user);
+			
 			alertUtils.alert(response, "아이디 또는 비밀번호가 틀렸습니다.");
-
+			LOGGER.info("로그인 실패 : " + user);
+			
 			return "/login";
 
 		}
@@ -182,7 +180,6 @@ public class MainController {
 		
 		if (cookies != null) {
 			for (int i = 0; i < cookies.length; i++) {
-				// System.out.println("쿠키 이름 : "+cookies[i].getName());
 				// 만들어진 쿠키들을 확인하며, 만약 들어온 적 있다면 생성되었을 쿠키가 있는지 확인
 				if (cookies[i].getName().equals(paymentId)
 						&& cookies[i].getValue().equals(userId)) {
@@ -231,7 +228,7 @@ public class MainController {
 			}
 			// 만들어진 쿠키가 있으면 증가로직 진행하지 않음
 		} else {
-			String value = viewCookie.getValue();
+			viewCookie.getValue();
 		}
 
 		return "/selectView";
@@ -257,7 +254,6 @@ public class MainController {
 			List<TestBoardServiceVO> searchList = boardService.search(vo);
 			int searchTot = searchList.size();
 			List<TestBoardServiceVO> orderByView = boardService.orderByView(vo);
-
 			
 			model.addAttribute("orderByView", orderByView);
 			model.addAttribute("searchList", searchList);
@@ -271,7 +267,6 @@ public class MainController {
 			List<TestBoardServiceVO> searchList = boardService.search(vo);
 			int searchTot = searchList.size();
 			List<TestBoardServiceVO> orderByView = boardService.orderByView(vo);
-
 			
 			model.addAttribute("orderByView", orderByView);
 			model.addAttribute("searchList", searchList);

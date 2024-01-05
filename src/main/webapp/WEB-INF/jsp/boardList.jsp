@@ -180,8 +180,6 @@ function fn_logout() {
 		
 } */
 
-
-
 </script>
 
 </head>
